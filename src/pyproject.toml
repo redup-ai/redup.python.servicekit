@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "redup-servicekit"
-description = "Python package implementations"
+description = "Toolkit for Python microservices: YAML configuration, JSON logging, Prometheus metrics and gRPC utilities"
 authors = [{name = "REDUP"}]
 readme = "README.md"
 license = {text = "MIT"}
 keywords = ["servicekit", "python", "grpc", "prometheus"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
@@ -24,6 +24,10 @@ classifiers = [
 requires-python = ">=3.9"
 
 dynamic = ["version", "dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/redup-ai/redup.python.servicekit/blob/main/README.md"
+Repository = "https://github.com/redup-ai/redup.python.servicekit"
 
 [tool.setuptools.packages.find]
 where = ["."]
