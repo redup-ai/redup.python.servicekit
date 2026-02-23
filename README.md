@@ -1,5 +1,7 @@
 # redup-servicekit
 
+[![PyPI version](https://img.shields.io/pypi/v/redup-servicekit)](https://pypi.org/project/redup-servicekit/)
+
 Python toolkit for building production-ready microservices with:
 
 - centralized YAML configuration and environment overrides,
