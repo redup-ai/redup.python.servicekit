@@ -1,5 +1,5 @@
-import futures
 import threading
+from concurrent import futures
 
 from grpc_health.v1 import health as health_servicer_module
 from grpc_health.v1 import health_pb2, health_pb2_grpc
