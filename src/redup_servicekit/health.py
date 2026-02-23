@@ -1,3 +1,4 @@
+import futures
 import threading
 
 from grpc_health.v1 import health as health_servicer_module
