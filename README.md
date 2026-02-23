@@ -1,7 +1,6 @@
 # redup-servicekit
 
 ![Python Test status](https://github.com/redup-ai/redup.python.servicekit/actions/workflows/python-test.yml/badge.svg?branch=master)
-[![PyPI version](https://img.shields.io/pypi/v/redup-servicekit)](https://pypi.org/project/redup-servicekit/)
 
 
 Python toolkit for building production-ready microservices with:
