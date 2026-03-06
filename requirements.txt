@@ -1,8 +1,8 @@
 PyYAML<7.0,>=6.0.3
 python-json-logger<5.0,>=4.0.0
 prometheus-client<1.0,>=0.24.1
-grpcio<2.0,>=1.78.0
-grpcio-tools<2.0,>=1.78.0
-grpcio-reflection<2.0,>=1.78.0
-grpcio-health-checking<2.0,>=1.78.0
 protobuf<7.0,>=6.32.1
+grpcio==1.78.1
+grpcio-tools==1.78.1
+grpcio-reflection==1.78.1
+grpcio-health-checking==1.78.1
