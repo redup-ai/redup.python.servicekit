@@ -18,7 +18,7 @@ extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx',
     'sphinx.ext.todo', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode',
     'sphinx.ext.inheritance_diagram', 'sphinx.ext.autosummary',
-    'sphinx.ext.mathjax', 'sphinx_rtd_theme', 'm2r2', 'sphinx.ext.napoleon'
+    'sphinx.ext.mathjax', 'sphinx_rtd_theme', 'm2r2',
 ]
 
 autodoc_mock_imports = [
@@ -39,7 +39,7 @@ autodoc_default_options = {
     'show-inheritance': True,
 }
 
-autodoc_typehints = 'description'
+autodoc_typehints = 'none'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
