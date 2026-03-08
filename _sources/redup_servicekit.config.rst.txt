@@ -1,0 +1,7 @@
+redup\_servicekit.config module
+===============================
+
+.. automodule:: redup_servicekit.config
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,16 @@
+redup\_servicekit.grpc package
+==============================
+
+.. automodule:: redup_servicekit.grpc
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   redup_servicekit.grpc.client
+   redup_servicekit.grpc.decorators
