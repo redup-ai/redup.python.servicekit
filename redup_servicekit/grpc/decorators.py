@@ -59,7 +59,7 @@ def aio_grpc_method_wrapper(func):
     Injects ``kwargs["info"]`` (context, time_remaining) and
     ``kwargs["metrics"]`` (dict for custom metrics to merge into stats).
 
-    :param func: Async handler with signature (self, request, context, **kwargs).
+    :param func: Async handler with signature (self, request, context, ``**kwargs``).
     """
     @wraps(func)
     async def run_with_metrics(*args, **kwargs):

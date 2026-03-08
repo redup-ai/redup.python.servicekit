@@ -26,7 +26,6 @@ jobs:
 
       - name: Build Docs
         run: |
-          PYTHONPATH=./ sphinx-apidoc -fMeT -o ./docs/source/ ./redup_servicekit/
           PYTHONPATH=./ sphinx-build -b html ./docs/source/ ./public
           
           touch ./public/.nojekyll
