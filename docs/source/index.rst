@@ -1,14 +1,23 @@
-redup.python.servicekit Documentation!
-================================================================================
+Welcome to redup.python.servicekit
+==================================
+
+.. mdinclude:: ../../README.md
 
 .. toctree::
    :maxdepth: 1
-   :caption: Main Info:
-   
-   readme.rst
-   
-.. toctree::
-   :maxdepth: 1
    :caption: Packages:
-   
-   redup_servicekit.rst
+
+   config
+   logging
+   health
+   metrics
+   monitoring
+   grpc
+   redup_servicekit
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

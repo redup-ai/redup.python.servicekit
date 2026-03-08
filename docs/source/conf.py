@@ -1,3 +1,9 @@
+import os
+
+_version_path = os.path.join(os.path.dirname(__file__), '..', '..', 'VERSION')
+with open(_version_path) as _f:
+    version = release = _f.read().strip()
+
 # -- Project information -----------------------------------------------------
 
 project = 'redup.python.servicekit'
@@ -18,6 +24,16 @@ extensions = [
 autodoc_mock_imports = []
 
 add_module_names = False
+
+autodoc_default_options = {
+    'members': True,
+    'member-order': 'bysource',
+    'special-members': '__init__',
+    'undoc-members': True,
+    'show-inheritance': True,
+}
+
+autodoc_typehints = 'description'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

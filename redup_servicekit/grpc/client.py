@@ -1,3 +1,9 @@
+"""Async gRPC client with TLS, compression and configurable limits.
+
+The :mod:`redup_servicekit.grpc.client` module contains:
+
+- :class:`redup_servicekit.grpc.client.BasicAsyncClient`
+"""
 from typing import Tuple
 from urllib.parse import urlparse
 
@@ -18,6 +24,25 @@ HTTP2_MAX_PINGS_WITHOUT_DATA = 0
 
 
 class BasicAsyncClient:
+    r"""Async gRPC client with on-demand channels, TLS and compression.
+
+    :param host: Server address (e.g. ``localhost:50051`` or ``https://service:443``).
+    :type host: str
+    :param ServiceStub: Generated gRPC stub class (e.g. ``MyServiceStub``).
+    :param max_message_length: Max send/receive message length in bytes. Default 100 MiB.
+    :type max_message_length: int
+    :param request_compression_algo: ``gzip``, ``deflate``, or ``no_compression``.
+    :type request_compression_algo: str
+    :param response_compression_algo: Same options; sent as metadata.
+    :type response_compression_algo: str
+
+    Example:
+
+    >>> from redup_servicekit.grpc import BasicAsyncClient
+    >>> client = BasicAsyncClient("localhost:50051", MyServiceStub, request_compression_algo="gzip")
+    >>> response = await client.send(MyRequest(field="value"), Method="MyRpc", timeout=30)
+    """
+
     @staticmethod
     def _channel_options(max_message_length: int):
         return [
@@ -72,6 +97,18 @@ class BasicAsyncClient:
         timeout=None,
         stream: bool = False,
     ):
+        r"""Send a request and return a single response (unary) or async stream.
+
+        :param request: The request message instance.
+        :param Method: Method name string (e.g. ``"MyRpc"``).
+        :type Method: str
+        :param metadata: Optional tuple of (key, value) metadata.
+        :param max_message_length: Override max message length for this call.
+        :param timeout: Optional timeout in seconds.
+        :param stream: If True, return an async generator of response messages.
+        :type stream: bool
+        :return: Single response message (unary) or async generator (stream).
+        """
         request_metadata = metadata + self._base_metadata
         channel_options = BasicAsyncClient._channel_options(max_message_length) if max_message_length != DEFAULT_MAX_MESSAGE_LENGTH else self._channel_opts
         if self._use_tls:

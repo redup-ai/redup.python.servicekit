@@ -1,3 +1,13 @@
+"""Prometheus metrics registry and bucket/aggregation constants.
+
+The :mod:`redup_servicekit.metrics` module contains:
+
+- :data:`redup_servicekit.metrics.PROMETHEUS_METRICS_REGISTRY` — singleton registry for metrics
+- :data:`redup_servicekit.metrics.OPERATION_EXPAND_METRICS` — aggregation name to function
+- :data:`redup_servicekit.metrics.BUCKETS_HIST` — histogram bucket boundaries for time/size
+"""
+
+
 class _MetricsRegistry(dict):
     _instance = None
 

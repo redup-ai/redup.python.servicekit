@@ -1,3 +1,14 @@
+"""Prometheus metrics collection and HTTP server for /metrics.
+
+The :mod:`redup_servicekit.monitoring` module contains:
+
+- :class:`redup_servicekit.monitoring.TaskStatus` — enum for task outcome (OK, FATAL, etc.)
+- :class:`redup_servicekit.monitoring.ErrorParser` — map exceptions to error types and health status
+- :class:`redup_servicekit.monitoring.StatusParser` — success/failure label for stats
+- :class:`redup_servicekit.monitoring.MonitorStorage` — async storage for stats; registry updated on /metrics
+- :class:`redup_servicekit.monitoring.MetricServer` — HTTP server that serves /metrics
+- :class:`redup_servicekit.monitoring.MonitorServer` — singleton entry point; runs MetricServer, forwards to storage
+"""
 import asyncio
 import copy
 import datetime
@@ -27,6 +38,12 @@ from .metrics import (
 
 
 class TaskStatus(Enum):
+    r"""Status of a task for health reporting.
+
+    Used when reporting task outcome: OK, FATAL, CONNECTION_ERROR,
+    OTHER_EXCEPTION, INTERNAL, UNKNOWN. Config maps error types to these
+    and to an unhealthy threshold.
+    """
     OK = 1
     FATAL = 2
     CONNECTION_ERROR = 3
@@ -36,6 +53,8 @@ class TaskStatus(Enum):
 
 
 class ErrorParser:
+    r"""Maps exception tracebacks to error type strings and sets task status for health."""
+
     _types = []
     _taskstatus2types = {}
 
@@ -77,6 +96,8 @@ class ErrorParser:
 
 
 class StatusParser:
+    r"""Returns ``failure`` or ``success`` label for processed-request stats."""
+
     _types = ["failure", "success"]
 
     @staticmethod
@@ -85,7 +106,13 @@ class StatusParser:
 
 
 class MonitorStorage:
-    """Async storage for monitoring state. Registry is updated only when /metrics is requested."""
+    r"""Async storage for monitoring state.
+
+    Holds stats and task status. The Prometheus registry is updated only
+    when :meth:`refresh_registry_for_metrics` is called (e.g. on each /metrics request).
+    Methods: inc_stats, set_stats, set_task_status, append_stats, add_key_value,
+    del_key_value, get_stats, get_statuses.
+    """
 
     @staticmethod
     def _sanitize_metric_name(name):
@@ -352,7 +379,16 @@ class MonitorStorage:
 
 
 class MetricServer:
-    """HTTP server in a thread: serves /metrics. Updates registry from storage only when /metrics is requested."""
+    r"""HTTP server that serves /metrics.
+
+    On each /metrics request refreshes the Prometheus registry from the
+    provided storage, then exports. Use :meth:`run_in_thread` to start
+    in a daemon thread on a given port.
+
+    :param registry: Prometheus registry to export. Default ``REGISTRY``.
+    :param disable_compression: If True, disable response compression.
+    :param storage: Optional :class:`MonitorStorage`; if set, registry is refreshed from it on each request.
+    """
 
     def __init__(self, registry=REGISTRY, disable_compression=False, storage=None):
         self._registry = registry
@@ -408,7 +444,19 @@ class MetricServer:
 
 
 class MonitorServer:
-    """Single entry point: forwards all requests to MonitorStorage. Runs MetricServer in a thread."""
+    r"""Singleton entry point for monitoring.
+
+    Holds :class:`MonitorStorage`, runs :class:`MetricServer` in a thread,
+    forwards all stats/status calls to storage. Call :meth:`run` with server
+    config (port, errors, service info) to start the metrics HTTP server.
+    Use :meth:`get_instance` to get the singleton from decorators or app code.
+
+    Example:
+
+    >>> server = MonitorServer()
+    >>> server.run(server_config={"port": 9999, "errors": {...}}, max_workers=4)
+    >>> await server.inc_stats("request___method__MyMethod")
+    """
 
     __instance = None
     __time = None

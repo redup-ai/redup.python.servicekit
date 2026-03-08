@@ -1,3 +1,10 @@
+"""gRPC server decorators for metrics and health integration.
+
+The :mod:`redup_servicekit.grpc.decorators` module contains:
+
+- :func:`redup_servicekit.grpc.decorators.grpc_init_wrapper` — wrap servicer init; register per-method stats
+- :func:`redup_servicekit.grpc.decorators.aio_grpc_method_wrapper` — wrap async handlers; record metrics and health
+"""
 import logging
 import time
 import traceback
@@ -10,6 +17,14 @@ from ..monitoring import ErrorParser, MonitorServer, StatusParser
 
 
 def grpc_init_wrapper(func):
+    r"""Wrap the function that initializes and runs the gRPC server.
+
+    Calls :meth:`ErrorParser.init` and pre-registers per-method stats
+    for all public methods of the servicer instance (args[0]). Use on
+    your init/run function that creates the server and adds the servicer.
+
+    :param func: Callable that takes servicer (or server) and runs the server.
+    """
     @wraps(func)
     def init_and_run(*args, **kwargs):
         ErrorParser.init()
@@ -36,6 +51,16 @@ def grpc_init_wrapper(func):
 
 
 def aio_grpc_method_wrapper(func):
+    r"""Wrap an async gRPC handler to record metrics and health.
+
+    For each call: increments request counter, records task start/end,
+    measures request/response size and duration, records success/failure
+    and error type, updates health via :meth:`ErrorParser.set_status`.
+    Injects ``kwargs["info"]`` (context, time_remaining) and
+    ``kwargs["metrics"]`` (dict for custom metrics to merge into stats).
+
+    :param func: Async handler with signature (self, request, context, **kwargs).
+    """
     @wraps(func)
     async def run_with_metrics(*args, **kwargs):
         rpc_method_name = getattr(func, "__name__", "UnknownObject")

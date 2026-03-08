@@ -1,3 +1,14 @@
+"""Toolkit for Python microservices: config, logging, Prometheus metrics, gRPC.
+
+The :mod:`redup_servicekit` package contains:
+
+- :mod:`redup_servicekit.config` — YAML config singleton
+- :mod:`redup_servicekit.logging` — JSON console logging
+- :mod:`redup_servicekit.health` — gRPC health checks
+- :mod:`redup_servicekit.metrics` — Prometheus registry and constants
+- :mod:`redup_servicekit.monitoring` — MonitorServer, MetricServer, task stats
+- :mod:`redup_servicekit.grpc` — async client and server decorators
+"""
 import sys
 
 if sys.version_info >= (3, 8):

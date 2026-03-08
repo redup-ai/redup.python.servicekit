@@ -1,3 +1,9 @@
+"""Configuration singleton for YAML config with merge and environment overrides.
+
+The :mod:`redup_servicekit.config` module contains:
+
+- :class:`redup_servicekit.config.ConfigSingleton`
+"""
 import logging
 import os
 from pathlib import Path
@@ -7,6 +13,23 @@ import yaml
 
 
 class ConfigSingleton:
+    r"""Singleton for loading and merging YAML configuration.
+
+    Supports deep merge of additional YAML files or dicts, and override of
+    config values from environment variables. Use ``___`` (triple underscore)
+    in env names for nesting; use ``__`` (double) for spaces in key names.
+    Comma-separated env values become lists.
+
+    Example:
+
+    >>> from pathlib import Path
+    >>> from redup_servicekit.config import ConfigSingleton
+    >>> ConfigSingleton.load(Path("/config/config.yaml"))
+    >>> ConfigSingleton.merge(Path("/config/config.local.yaml"))  # if exists
+    >>> ConfigSingleton.inject_os_envs()
+    >>> config = ConfigSingleton.get()
+    """
+
     _data: Optional[Dict[str, Any]] = None
 
     @staticmethod
@@ -24,6 +47,14 @@ class ConfigSingleton:
 
     @classmethod
     def load(cls, config_path: Union[str, Path]) -> Dict[str, Any]:
+        r"""Load configuration from a YAML file.
+
+        :param config_path: Path to a ``.yaml`` file.
+        :type config_path: str or path-like
+        :return: The loaded config as a dict.
+        :rtype: dict
+        :raises ValueError: If the path does not exist or is not a ``.yaml`` file.
+        """
         config_path_resolved = Path(config_path)
         if not config_path_resolved.exists():
             raise ValueError(
@@ -38,12 +69,24 @@ class ConfigSingleton:
 
     @classmethod
     def get(cls) -> Dict[str, Any]:
+        r"""Return the current configuration dict.
+
+        :return: The config dict.
+        :rtype: dict
+        :raises ValueError: If configuration has not been loaded.
+        """
         if cls._data is None:
             raise ValueError("Configuration not initialized.")
         return cls._data
 
     @classmethod
     def merge(cls, config: Union[str, Path, Dict[str, Any]]) -> None:
+        r"""Merge another YAML file or dict into the current config (deep merge).
+
+        :param config: Path to a YAML file or a dict to merge in.
+        :type config: str, path-like, or dict
+        :raises ValueError: If config not initialized or path does not exist.
+        """
         if cls._data is None:
             raise ValueError("Configuration not initialized.")
         if isinstance(config, dict):
@@ -60,6 +103,13 @@ class ConfigSingleton:
 
     @classmethod
     def inject_os_envs(cls) -> None:
+        r"""Override config values from environment variables.
+
+        Env names like ``section___subsection___key`` map to nested keys;
+        ``__`` in a segment is replaced by space in the key name.
+        Comma-separated values become lists. Only keys already present
+        in the config are overridden.
+        """
         if cls._data is None:
             return
         changed = False
