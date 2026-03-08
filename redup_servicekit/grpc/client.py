@@ -26,7 +26,7 @@ HTTP2_MAX_PINGS_WITHOUT_DATA = 0
 class BasicAsyncClient:
     r"""Async gRPC client with on-demand channels, TLS and compression.
 
-    :param host: Server address (e.g. ``localhost:50051`` or ``https://service:443``).
+    :param host: Server address with protocol: ``grpc://host:port`` (non-TLS) or ``https://host:port`` (TLS). Do not omit the scheme.
     :type host: str
     :param ServiceStub: Generated gRPC stub class (e.g. ``MyServiceStub``).
     :param max_message_length: Max send/receive message length in bytes. Default 100 MiB.
@@ -39,7 +39,7 @@ class BasicAsyncClient:
     Example:
 
     >>> from redup_servicekit.grpc import BasicAsyncClient
-    >>> client = BasicAsyncClient("localhost:50051", MyServiceStub, request_compression_algo="gzip")
+    >>> client = BasicAsyncClient("grpc://localhost:50051", MyServiceStub, request_compression_algo="gzip")
     >>> response = await client.send(MyRequest(field="value"), Method="MyRpc", timeout=30)
     """
 
