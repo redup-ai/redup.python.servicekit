@@ -21,7 +21,13 @@ extensions = [
     'sphinx.ext.mathjax', 'sphinx_rtd_theme', 'm2r2', 'sphinx.ext.napoleon'
 ]
 
-autodoc_mock_imports = []
+autodoc_mock_imports = [
+    'yaml',
+    'pythonjsonlogger',
+    'prometheus_client',
+    'grpc_health',
+    'grpc',
+]
 
 add_module_names = False
 

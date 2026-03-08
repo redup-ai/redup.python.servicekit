@@ -23,7 +23,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install -U sphinx-rtd-theme m2r2
-          
+
       - name: Build Docs
         run: |
           PYTHONPATH=./ sphinx-apidoc -fMeT -o ./docs/source/ ./redup_servicekit/
