@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="redup_servicekit package" href="redup_servicekit.html" />
+    <link rel="next" title="redup_servicekit" href="redup_servicekit.html" />
     <link rel="prev" title="Monitoring" href="monitoring.html" /> 
 </head>
 
@@ -70,11 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.html">redup_servicekit package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.html">redup_servicekit</a></li>
 </ul>
 
         </div>
@@ -104,11 +100,11 @@
   <section id="module-redup_servicekit.grpc">
 <span id="grpc-utilities"></span><h1>gRPC utilities<a class="headerlink" href="#module-redup_servicekit.grpc" title="Link to this heading"></a></h1>
 <p>gRPC utilities: async client and server decorators for metrics and health.</p>
-<p>The <a class="reference internal" href="redup_servicekit.grpc.html#module-redup_servicekit.grpc" title="redup_servicekit.grpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.grpc</span></code></a> package contains:</p>
+<p>The <a class="reference internal" href="#module-redup_servicekit.grpc" title="redup_servicekit.grpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.grpc</span></code></a> package contains:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="redup_servicekit.grpc.client.html#redup_servicekit.grpc.client.BasicAsyncClient" title="redup_servicekit.grpc.client.BasicAsyncClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.grpc.client.BasicAsyncClient</span></code></a> — async gRPC client</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.decorators.grpc_init_wrapper" title="redup_servicekit.grpc.decorators.grpc_init_wrapper"><code class="xref py py-func docutils literal notranslate"><span class="pre">redup_servicekit.grpc.decorators.grpc_init_wrapper()</span></code></a> — init wrapper for servicer</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.decorators.aio_grpc_method_wrapper" title="redup_servicekit.grpc.decorators.aio_grpc_method_wrapper"><code class="xref py py-func docutils literal notranslate"><span class="pre">redup_servicekit.grpc.decorators.aio_grpc_method_wrapper()</span></code></a> — method wrapper for metrics</p></li>
+<li><p><a class="reference internal" href="#redup_servicekit.grpc.BasicAsyncClient" title="redup_servicekit.grpc.client.BasicAsyncClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.grpc.client.BasicAsyncClient</span></code></a> — async gRPC client</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">redup_servicekit.grpc.decorators.grpc_init_wrapper()</span></code> — init wrapper for servicer</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">redup_servicekit.grpc.decorators.aio_grpc_method_wrapper()</span></code> — method wrapper for metrics</p></li>
 </ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient">
@@ -181,7 +177,7 @@ Injects <code class="docutils literal notranslate"><span class="pre">kwargs[&quo
 <code class="docutils literal notranslate"><span class="pre">kwargs[&quot;metrics&quot;]</span></code> (dict for custom metrics to merge into stats).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>func</strong> – Async handler with signature (self, request, context, <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs).</p>
+<dd class="field-odd"><p><strong>func</strong> – Async handler with signature (self, request, context, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -207,7 +203,7 @@ your init/run function that creates the server and adds the servicer.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="monitoring.html" class="btn btn-neutral float-left" title="Monitoring" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="redup_servicekit.html" class="btn btn-neutral float-right" title="redup_servicekit package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="redup_servicekit.html" class="btn btn-neutral float-right" title="redup_servicekit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

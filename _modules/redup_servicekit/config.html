@@ -67,11 +67,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../redup_servicekit.html">redup_servicekit package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../redup_servicekit.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../redup_servicekit.html#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../redup_servicekit.html">redup_servicekit</a></li>
 </ul>
 
         </div>
@@ -114,7 +110,7 @@
 
 
 <div class="viewcode-block" id="ConfigSingleton">
-<a class="viewcode-back" href="../../redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton">[docs]</a>
+<a class="viewcode-back" href="../../config.html#redup_servicekit.config.ConfigSingleton">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ConfigSingleton</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Singleton for loading and merging YAML configuration.</span>
 
@@ -149,7 +145,7 @@
         <span class="k">return</span> <span class="n">target</span>
 
 <div class="viewcode-block" id="ConfigSingleton.load">
-<a class="viewcode-back" href="../../redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.load">[docs]</a>
+<a class="viewcode-back" href="../../config.html#redup_servicekit.config.ConfigSingleton.load">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Load configuration from a YAML file.</span>
@@ -174,7 +170,7 @@
 
 
 <div class="viewcode-block" id="ConfigSingleton.get">
-<a class="viewcode-back" href="../../redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.get">[docs]</a>
+<a class="viewcode-back" href="../../config.html#redup_servicekit.config.ConfigSingleton.get">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return the current configuration dict.</span>
@@ -189,7 +185,7 @@
 
 
 <div class="viewcode-block" id="ConfigSingleton.merge">
-<a class="viewcode-back" href="../../redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.merge">[docs]</a>
+<a class="viewcode-back" href="../../config.html#redup_servicekit.config.ConfigSingleton.merge">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Merge another YAML file or dict into the current config (deep merge).</span>
@@ -214,7 +210,7 @@
 
 
 <div class="viewcode-block" id="ConfigSingleton.inject_os_envs">
-<a class="viewcode-back" href="../../redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.inject_os_envs">[docs]</a>
+<a class="viewcode-back" href="../../config.html#redup_servicekit.config.ConfigSingleton.inject_os_envs">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">inject_os_envs</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Override config values from environment variables.</span>

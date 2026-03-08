@@ -67,11 +67,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../redup_servicekit.html">redup_servicekit package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../redup_servicekit.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../redup_servicekit.html#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redup_servicekit.html">redup_servicekit</a></li>
 </ul>
 
         </div>
@@ -125,7 +121,7 @@
 
 
 <div class="viewcode-block" id="BasicAsyncClient">
-<a class="viewcode-back" href="../../../redup_servicekit.grpc.client.html#redup_servicekit.grpc.BasicAsyncClient">[docs]</a>
+<a class="viewcode-back" href="../../../grpc.html#redup_servicekit.grpc.BasicAsyncClient">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BasicAsyncClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Async gRPC client with on-demand channels, TLS and compression.</span>
 
@@ -166,7 +162,7 @@
         <span class="k">return</span> <span class="n">location</span><span class="p">,</span> <span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s2">&quot;https&quot;</span>
 
 <div class="viewcode-block" id="BasicAsyncClient.__init__">
-<a class="viewcode-back" href="../../../redup_servicekit.grpc.client.html#redup_servicekit.grpc.BasicAsyncClient.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../grpc.html#redup_servicekit.grpc.BasicAsyncClient.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -195,7 +191,7 @@
             <span class="k">yield</span> <span class="k">await</span> <span class="n">stub_method</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BasicAsyncClient.send">
-<a class="viewcode-back" href="../../../redup_servicekit.grpc.client.html#redup_servicekit.grpc.BasicAsyncClient.send">[docs]</a>
+<a class="viewcode-back" href="../../../grpc.html#redup_servicekit.grpc.BasicAsyncClient.send">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">request</span><span class="p">,</span>

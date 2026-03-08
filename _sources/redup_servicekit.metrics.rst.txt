@@ -1,7 +1,0 @@
-redup\_servicekit.metrics module
-================================
-
-.. automodule:: redup_servicekit.metrics
-   :members:
-   :show-inheritance:
-   :undoc-members:

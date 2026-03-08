@@ -1,7 +1,0 @@
-redup\_servicekit.monitoring module
-===================================
-
-.. automodule:: redup_servicekit.monitoring
-   :members:
-   :show-inheritance:
-   :undoc-members:

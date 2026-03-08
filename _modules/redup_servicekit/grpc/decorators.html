@@ -67,11 +67,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../redup_servicekit.html">redup_servicekit package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../redup_servicekit.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../redup_servicekit.html#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redup_servicekit.html">redup_servicekit</a></li>
 </ul>
 
         </div>
@@ -118,7 +114,7 @@
 
 
 <div class="viewcode-block" id="grpc_init_wrapper">
-<a class="viewcode-back" href="../../../redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.grpc_init_wrapper">[docs]</a>
+<a class="viewcode-back" href="../../../grpc.html#redup_servicekit.grpc.grpc_init_wrapper">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">grpc_init_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Wrap the function that initializes and runs the gRPC server.</span>
 
@@ -155,7 +151,7 @@
 
 
 <div class="viewcode-block" id="aio_grpc_method_wrapper">
-<a class="viewcode-back" href="../../../redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.aio_grpc_method_wrapper">[docs]</a>
+<a class="viewcode-back" href="../../../grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aio_grpc_method_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Wrap an async gRPC handler to record metrics and health.</span>
 
@@ -165,7 +161,7 @@
 <span class="sd">    Injects ``kwargs[&quot;info&quot;]`` (context, time_remaining) and</span>
 <span class="sd">    ``kwargs[&quot;metrics&quot;]`` (dict for custom metrics to merge into stats).</span>
 
-<span class="sd">    :param func: Async handler with signature (self, request, context, **kwargs).</span>
+<span class="sd">    :param func: Async handler with signature (self, request, context, ``**kwargs``).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_with_metrics</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

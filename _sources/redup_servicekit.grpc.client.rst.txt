@@ -1,7 +1,0 @@
-redup\_servicekit.grpc.client module
-====================================
-
-.. automodule:: redup_servicekit.grpc.client
-   :members:
-   :show-inheritance:
-   :undoc-members:

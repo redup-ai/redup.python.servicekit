@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>redup_servicekit package &mdash; redup.python.servicekit 1.0.2 documentation</title>
+  <title>redup_servicekit &mdash; redup.python.servicekit 1.0.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -20,7 +20,6 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="redup_servicekit.grpc package" href="redup_servicekit.grpc.html" />
     <link rel="prev" title="gRPC utilities" href="grpc.html" /> 
 </head>
 
@@ -70,11 +69,7 @@
 <li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">redup_servicekit package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">redup_servicekit</a></li>
 </ul>
 
         </div>
@@ -91,7 +86,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">redup_servicekit package</li>
+      <li class="breadcrumb-item active">redup_servicekit</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/redup-ai/redup.python.servicekit/blob/master/docs/source/redup_servicekit.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -102,127 +97,17 @@
            <div itemprop="articleBody">
              
   <section id="module-redup_servicekit">
-<span id="redup-servicekit-package"></span><h1>redup_servicekit package<a class="headerlink" href="#module-redup_servicekit" title="Link to this heading"></a></h1>
+<span id="redup-servicekit"></span><h1>redup_servicekit<a class="headerlink" href="#module-redup_servicekit" title="Link to this heading"></a></h1>
 <p>Toolkit for Python microservices: config, logging, Prometheus metrics, gRPC.</p>
 <p>The <a class="reference internal" href="#module-redup_servicekit" title="redup_servicekit"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit</span></code></a> package contains:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="redup_servicekit.config.html#module-redup_servicekit.config" title="redup_servicekit.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.config</span></code></a> — YAML config singleton</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.logging.html#module-redup_servicekit.logging" title="redup_servicekit.logging"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.logging</span></code></a> — JSON console logging</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.health.html#module-redup_servicekit.health" title="redup_servicekit.health"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.health</span></code></a> — gRPC health checks</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.metrics.html#module-redup_servicekit.metrics" title="redup_servicekit.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.metrics</span></code></a> — Prometheus registry and constants</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#module-redup_servicekit.monitoring" title="redup_servicekit.monitoring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.monitoring</span></code></a> — MonitorServer, MetricServer, task stats</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.grpc.html#module-redup_servicekit.grpc" title="redup_servicekit.grpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.grpc</span></code></a> — async client and server decorators</p></li>
+<li><p><a class="reference internal" href="config.html#module-redup_servicekit.config" title="redup_servicekit.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.config</span></code></a> — YAML config singleton</p></li>
+<li><p><a class="reference internal" href="logging.html#module-redup_servicekit.logging" title="redup_servicekit.logging"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.logging</span></code></a> — JSON console logging</p></li>
+<li><p><a class="reference internal" href="health.html#module-redup_servicekit.health" title="redup_servicekit.health"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.health</span></code></a> — gRPC health checks</p></li>
+<li><p><a class="reference internal" href="metrics.html#module-redup_servicekit.metrics" title="redup_servicekit.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.metrics</span></code></a> — Prometheus registry and constants</p></li>
+<li><p><a class="reference internal" href="monitoring.html#module-redup_servicekit.monitoring" title="redup_servicekit.monitoring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.monitoring</span></code></a> — MonitorServer, MetricServer, task stats</p></li>
+<li><p><a class="reference internal" href="grpc.html#module-redup_servicekit.grpc" title="redup_servicekit.grpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.grpc</span></code></a> — async client and server decorators</p></li>
 </ul>
-<section id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.grpc.html">redup_servicekit.grpc package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.grpc.html#redup_servicekit.grpc.BasicAsyncClient"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.grpc.html#redup_servicekit.grpc.BasicAsyncClient.__init__"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient.__init__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.grpc.html#redup_servicekit.grpc.BasicAsyncClient.send"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient.send()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper"><code class="docutils literal notranslate"><span class="pre">aio_grpc_method_wrapper()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.grpc.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.grpc.client.html">redup_servicekit.grpc.client module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="redup_servicekit.grpc.client.html#redup_servicekit.grpc.client.BasicAsyncClient"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.grpc.decorators.html">redup_servicekit.grpc.decorators module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.decorators.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.decorators.aio_grpc_method_wrapper"><code class="docutils literal notranslate"><span class="pre">aio_grpc_method_wrapper()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.config.html">redup_servicekit.config module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.load"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton.load()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.get"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton.get()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.merge"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton.merge()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton.inject_os_envs"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton.inject_os_envs()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.health.html">redup_servicekit.health module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.logging.html">redup_servicekit.logging module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.logging.html#redup_servicekit.logging.init_console_log"><code class="docutils literal notranslate"><span class="pre">init_console_log()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.metrics.html">redup_servicekit.metrics module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.monitoring.html">redup_servicekit.monitoring module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus"><code class="docutils literal notranslate"><span class="pre">TaskStatus</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus.OK"><code class="docutils literal notranslate"><span class="pre">TaskStatus.OK</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus.FATAL"><code class="docutils literal notranslate"><span class="pre">TaskStatus.FATAL</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus.CONNECTION_ERROR"><code class="docutils literal notranslate"><span class="pre">TaskStatus.CONNECTION_ERROR</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus.OTHER_EXCEPTION"><code class="docutils literal notranslate"><span class="pre">TaskStatus.OTHER_EXCEPTION</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus.INTERNAL"><code class="docutils literal notranslate"><span class="pre">TaskStatus.INTERNAL</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus.UNKNOWN"><code class="docutils literal notranslate"><span class="pre">TaskStatus.UNKNOWN</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser"><code class="docutils literal notranslate"><span class="pre">ErrorParser</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser.init"><code class="docutils literal notranslate"><span class="pre">ErrorParser.init()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser.parse"><code class="docutils literal notranslate"><span class="pre">ErrorParser.parse()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser.set_status"><code class="docutils literal notranslate"><span class="pre">ErrorParser.set_status()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.StatusParser"><code class="docutils literal notranslate"><span class="pre">StatusParser</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.StatusParser.parse"><code class="docutils literal notranslate"><span class="pre">StatusParser.parse()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage"><code class="docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.__init__"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.__init__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_time"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.get_time()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.refresh_registry_for_metrics()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.inc_stats"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.inc_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.set_stats"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.set_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.set_task_status"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.set_task_status()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.append_stats"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.append_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.add_key_value"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.add_key_value()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.del_key_value"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.del_key_value()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_stats"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.get_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_statuses"><code class="docutils literal notranslate"><span class="pre">MonitorStorage.get_statuses()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer"><code class="docutils literal notranslate"><span class="pre">MetricServer</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.__init__"><code class="docutils literal notranslate"><span class="pre">MetricServer.__init__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.get_wsgi_app"><code class="docutils literal notranslate"><span class="pre">MetricServer.get_wsgi_app()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.run_in_thread"><code class="docutils literal notranslate"><span class="pre">MetricServer.run_in_thread()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer"><code class="docutils literal notranslate"><span class="pre">MonitorServer</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_instance"><code class="docutils literal notranslate"><span class="pre">MonitorServer.get_instance()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_time"><code class="docutils literal notranslate"><span class="pre">MonitorServer.get_time()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.wait_for_ending_tasks"><code class="docutils literal notranslate"><span class="pre">MonitorServer.wait_for_ending_tasks()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.__init__"><code class="docutils literal notranslate"><span class="pre">MonitorServer.__init__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.set_stat_sync"><code class="docutils literal notranslate"><span class="pre">MonitorServer.set_stat_sync()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.run"><code class="docutils literal notranslate"><span class="pre">MonitorServer.run()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.inc_stats"><code class="docutils literal notranslate"><span class="pre">MonitorServer.inc_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.set_task_status"><code class="docutils literal notranslate"><span class="pre">MonitorServer.set_task_status()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.append_stats"><code class="docutils literal notranslate"><span class="pre">MonitorServer.append_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.add_key_value"><code class="docutils literal notranslate"><span class="pre">MonitorServer.add_key_value()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.del_key_value"><code class="docutils literal notranslate"><span class="pre">MonitorServer.del_key_value()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_stats"><code class="docutils literal notranslate"><span class="pre">MonitorServer.get_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_statuses"><code class="docutils literal notranslate"><span class="pre">MonitorServer.get_statuses()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
 </section>
 
 
@@ -230,7 +115,6 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="grpc.html" class="btn btn-neutral float-left" title="gRPC utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="redup_servicekit.grpc.html" class="btn btn-neutral float-right" title="redup_servicekit.grpc package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

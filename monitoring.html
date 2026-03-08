@@ -70,11 +70,7 @@
 <li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.html">redup_servicekit package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#subpackages">Subpackages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#submodules">Submodules</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="redup_servicekit.html">redup_servicekit</a></li>
 </ul>
 
         </div>
@@ -104,14 +100,14 @@
   <section id="module-redup_servicekit.monitoring">
 <span id="monitoring"></span><h1>Monitoring<a class="headerlink" href="#module-redup_servicekit.monitoring" title="Link to this heading"></a></h1>
 <p>Prometheus metrics collection and HTTP server for /metrics.</p>
-<p>The <a class="reference internal" href="redup_servicekit.monitoring.html#module-redup_servicekit.monitoring" title="redup_servicekit.monitoring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.monitoring</span></code></a> module contains:</p>
+<p>The <a class="reference internal" href="#module-redup_servicekit.monitoring" title="redup_servicekit.monitoring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.monitoring</span></code></a> module contains:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus" title="redup_servicekit.monitoring.TaskStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.TaskStatus</span></code></a> — enum for task outcome (OK, FATAL, etc.)</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser" title="redup_servicekit.monitoring.ErrorParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.ErrorParser</span></code></a> — map exceptions to error types and health status</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.StatusParser" title="redup_servicekit.monitoring.StatusParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.StatusParser</span></code></a> — success/failure label for stats</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MonitorStorage</span></code></a> — async storage for stats; registry updated on /metrics</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer" title="redup_servicekit.monitoring.MetricServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MetricServer</span></code></a> — HTTP server that serves /metrics</p></li>
-<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer" title="redup_servicekit.monitoring.MonitorServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MonitorServer</span></code></a> — singleton entry point; runs MetricServer, forwards to storage</p></li>
+<li><p><a class="reference internal" href="#redup_servicekit.monitoring.TaskStatus" title="redup_servicekit.monitoring.TaskStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.TaskStatus</span></code></a> — enum for task outcome (OK, FATAL, etc.)</p></li>
+<li><p><a class="reference internal" href="#redup_servicekit.monitoring.ErrorParser" title="redup_servicekit.monitoring.ErrorParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.ErrorParser</span></code></a> — map exceptions to error types and health status</p></li>
+<li><p><a class="reference internal" href="#redup_servicekit.monitoring.StatusParser" title="redup_servicekit.monitoring.StatusParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.StatusParser</span></code></a> — success/failure label for stats</p></li>
+<li><p><a class="reference internal" href="#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MonitorStorage</span></code></a> — async storage for stats; registry updated on /metrics</p></li>
+<li><p><a class="reference internal" href="#redup_servicekit.monitoring.MetricServer" title="redup_servicekit.monitoring.MetricServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MetricServer</span></code></a> — HTTP server that serves /metrics</p></li>
+<li><p><a class="reference internal" href="#redup_servicekit.monitoring.MonitorServer" title="redup_servicekit.monitoring.MonitorServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MonitorServer</span></code></a> — singleton entry point; runs MetricServer, forwards to storage</p></li>
 </ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus">
@@ -193,7 +189,7 @@ and to an unhealthy threshold.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Async storage for monitoring state.</p>
 <p>Holds stats and task status. The Prometheus registry is updated only
-when <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics" title="redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh_registry_for_metrics()</span></code></a> is called (e.g. on each /metrics request).
+when <a class="reference internal" href="#redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics" title="redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh_registry_for_metrics()</span></code></a> is called (e.g. on each /metrics request).
 Methods: inc_stats, set_stats, set_task_status, append_stats, add_key_value,
 del_key_value, get_stats, get_statuses.</p>
 <dl class="py method">
@@ -260,14 +256,14 @@ del_key_value, get_stats, get_statuses.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>HTTP server that serves /metrics.</p>
 <p>On each /metrics request refreshes the Prometheus registry from the
-provided storage, then exports. Use <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.run_in_thread" title="redup_servicekit.monitoring.MetricServer.run_in_thread"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_thread()</span></code></a> to start
+provided storage, then exports. Use <a class="reference internal" href="#redup_servicekit.monitoring.MetricServer.run_in_thread" title="redup_servicekit.monitoring.MetricServer.run_in_thread"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_thread()</span></code></a> to start
 in a daemon thread on a given port.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>registry</strong> – Prometheus registry to export. Default <code class="docutils literal notranslate"><span class="pre">REGISTRY</span></code>.</p></li>
 <li><p><strong>disable_compression</strong> – If True, disable response compression.</p></li>
-<li><p><strong>storage</strong> – Optional <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a>; if set, registry is refreshed from it on each request.</p></li>
+<li><p><strong>storage</strong> – Optional <a class="reference internal" href="#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a>; if set, registry is refreshed from it on each request.</p></li>
 </ul>
 </dd>
 </dl>
@@ -295,10 +291,10 @@ in a daemon thread on a given port.</p>
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">MonitorServer</span></span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Singleton entry point for monitoring.</p>
-<p>Holds <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a>, runs <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer" title="redup_servicekit.monitoring.MetricServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricServer</span></code></a> in a thread,
-forwards all stats/status calls to storage. Call <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.run" title="redup_servicekit.monitoring.MonitorServer.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> with server
+<p>Holds <a class="reference internal" href="#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a>, runs <a class="reference internal" href="#redup_servicekit.monitoring.MetricServer" title="redup_servicekit.monitoring.MetricServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricServer</span></code></a> in a thread,
+forwards all stats/status calls to storage. Call <a class="reference internal" href="#redup_servicekit.monitoring.MonitorServer.run" title="redup_servicekit.monitoring.MonitorServer.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> with server
 config (port, errors, service info) to start the metrics HTTP server.
-Use <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_instance" title="redup_servicekit.monitoring.MonitorServer.get_instance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_instance()</span></code></a> to get the singleton from decorators or app code.</p>
+Use <a class="reference internal" href="#redup_servicekit.monitoring.MonitorServer.get_instance" title="redup_servicekit.monitoring.MonitorServer.get_instance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_instance()</span></code></a> to get the singleton from decorators or app code.</p>
 <p>Example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="n">MonitorServer</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">server</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">server_config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">9999</span><span class="p">,</span> <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}},</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>

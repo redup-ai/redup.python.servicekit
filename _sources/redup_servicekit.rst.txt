@@ -1,27 +1,6 @@
-redup\_servicekit package
-=========================
+********************
+redup_servicekit
+********************
 
 .. automodule:: redup_servicekit
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-Subpackages
------------
-
-.. toctree::
-   :maxdepth: 4
-
-   redup_servicekit.grpc
-
-Submodules
-----------
-
-.. toctree::
-   :maxdepth: 4
-
-   redup_servicekit.config
-   redup_servicekit.health
-   redup_servicekit.logging
-   redup_servicekit.metrics
-   redup_servicekit.monitoring
+    :members:

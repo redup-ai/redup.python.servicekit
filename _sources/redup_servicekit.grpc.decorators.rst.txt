@@ -1,7 +1,0 @@
-redup\_servicekit.grpc.decorators module
-========================================
-
-.. automodule:: redup_servicekit.grpc.decorators
-   :members:
-   :show-inheritance:
-   :undoc-members:
