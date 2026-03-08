@@ -114,17 +114,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ServiceStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient.__init__" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>host</strong> (<em>str</em>)</p></li>
-<li><p><strong>max_message_length</strong> (<em>int</em>)</p></li>
-<li><p><strong>request_compression_algo</strong> (<em>str</em>)</p></li>
-<li><p><strong>response_compression_algo</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient.send">
@@ -135,8 +125,8 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>request</strong> – The request message instance.</p></li>
 <li><p><strong>Method</strong> (<em>str</em>) – Method name string (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;MyRpc&quot;</span></code>).</p></li>
-<li><p><strong>metadata</strong> (<em>Tuple</em><em>[</em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>...</em><em>]</em>) – Optional tuple of (key, value) metadata.</p></li>
-<li><p><strong>max_message_length</strong> (<em>int</em>) – Override max message length for this call.</p></li>
+<li><p><strong>metadata</strong> – Optional tuple of (key, value) metadata.</p></li>
+<li><p><strong>max_message_length</strong> – Override max message length for this call.</p></li>
 <li><p><strong>timeout</strong> – Optional timeout in seconds.</p></li>
 <li><p><strong>stream</strong> (<em>bool</em>) – If True, return an async generator of response messages.</p></li>
 </ul>
