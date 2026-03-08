@@ -1,9 +1,3 @@
-import os
-
-_version_path = os.path.join(os.path.dirname(__file__), '..', '..', 'VERSION')
-with open(_version_path) as _f:
-    version = _f.read().strip()
-
 # -- Project information -----------------------------------------------------
 
 project = 'redup.python.servicekit'
