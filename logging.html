@@ -45,12 +45,31 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Packages:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#redup_servicekit.config.ConfigSingleton"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.logging.init_console_log"><code class="docutils literal notranslate"><span class="pre">init_console_log()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="health.html">gRPC Health Checks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics (Prometheus)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
-<li class="toctree-l1"><a class="reference internal" href="grpc.html">gRPC utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.TaskStatus"><code class="docutils literal notranslate"><span class="pre">TaskStatus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.ErrorParser"><code class="docutils literal notranslate"><span class="pre">ErrorParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.StatusParser"><code class="docutils literal notranslate"><span class="pre">StatusParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.MonitorStorage"><code class="docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.MetricServer"><code class="docutils literal notranslate"><span class="pre">MetricServer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.MonitorServer"><code class="docutils literal notranslate"><span class="pre">MonitorServer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grpc.html">gRPC utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.BasicAsyncClient"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper"><code class="docutils literal notranslate"><span class="pre">aio_grpc_method_wrapper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="redup_servicekit.html">redup_servicekit package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#submodules">Submodules</a></li>
@@ -82,8 +101,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="logging">
-<h1>Logging<a class="headerlink" href="#logging" title="Link to this heading"></a></h1>
+  <section id="module-redup_servicekit.logging">
+<span id="logging"></span><h1>Logging<a class="headerlink" href="#module-redup_servicekit.logging" title="Link to this heading"></a></h1>
+<p>Structured JSON console logging for production and log aggregators.</p>
+<p>The <a class="reference internal" href="redup_servicekit.logging.html#module-redup_servicekit.logging" title="redup_servicekit.logging"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.logging</span></code></a> module contains:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="redup_servicekit.logging.html#redup_servicekit.logging.init_console_log" title="redup_servicekit.logging.init_console_log"><code class="xref py py-func docutils literal notranslate"><span class="pre">redup_servicekit.logging.init_console_log()</span></code></a></p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="redup_servicekit.logging.init_console_log">
+<span class="sig-name descname"><span class="pre">init_console_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'INFO'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/logging.html#init_console_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.logging.init_console_log" title="Link to this definition"></a></dt>
+<dd><p>Create the root logger with a single JSON console handler.</p>
+<p>All other loggers are set to CRITICAL so only this handler’s output
+is visible. JSON fields include asctime, created, filename, funcName,
+levelname, lineno, module, message, process, thread, threadName.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>level</strong> (<em>str</em>) – Log level name (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;INFO&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;DEBUG&quot;</span></code>). Default <code class="docutils literal notranslate"><span class="pre">&quot;INFO&quot;</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The root logger instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>logging.Logger</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the level string is not a valid level name.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">redup_servicekit.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_console_log</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span> <span class="o">=</span> <span class="n">init_console_log</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Service started&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 
 

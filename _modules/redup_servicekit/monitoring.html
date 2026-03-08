@@ -1,0 +1,884 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>redup_servicekit.monitoring &mdash; redup.python.servicekit 1.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            redup.python.servicekit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Packages:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../config.html#redup_servicekit.config.ConfigSingleton"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../logging.html">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../logging.html#redup_servicekit.logging.init_console_log"><code class="docutils literal notranslate"><span class="pre">init_console_log()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../health.html">gRPC Health Checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../metrics.html">Metrics (Prometheus)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring.html">Monitoring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring.html#redup_servicekit.monitoring.TaskStatus"><code class="docutils literal notranslate"><span class="pre">TaskStatus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring.html#redup_servicekit.monitoring.ErrorParser"><code class="docutils literal notranslate"><span class="pre">ErrorParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring.html#redup_servicekit.monitoring.StatusParser"><code class="docutils literal notranslate"><span class="pre">StatusParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage"><code class="docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring.html#redup_servicekit.monitoring.MetricServer"><code class="docutils literal notranslate"><span class="pre">MetricServer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring.html#redup_servicekit.monitoring.MonitorServer"><code class="docutils literal notranslate"><span class="pre">MonitorServer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../grpc.html">gRPC utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../grpc.html#redup_servicekit.grpc.BasicAsyncClient"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper"><code class="docutils literal notranslate"><span class="pre">aio_grpc_method_wrapper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../redup_servicekit.html">redup_servicekit package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../redup_servicekit.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../redup_servicekit.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">redup.python.servicekit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">redup_servicekit.monitoring</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for redup_servicekit.monitoring</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Prometheus metrics collection and HTTP server for /metrics.</span>
+
+<span class="sd">The :mod:`redup_servicekit.monitoring` module contains:</span>
+
+<span class="sd">- :class:`redup_servicekit.monitoring.TaskStatus` — enum for task outcome (OK, FATAL, etc.)</span>
+<span class="sd">- :class:`redup_servicekit.monitoring.ErrorParser` — map exceptions to error types and health status</span>
+<span class="sd">- :class:`redup_servicekit.monitoring.StatusParser` — success/failure label for stats</span>
+<span class="sd">- :class:`redup_servicekit.monitoring.MonitorStorage` — async storage for stats; registry updated on /metrics</span>
+<span class="sd">- :class:`redup_servicekit.monitoring.MetricServer` — HTTP server that serves /metrics</span>
+<span class="sd">- :class:`redup_servicekit.monitoring.MonitorServer` — singleton entry point; runs MetricServer, forwards to storage</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_qs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">wsgiref.simple_server</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_server</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client.exposition</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ThreadingWSGIServer</span><span class="p">,</span>
+    <span class="n">_bake_output</span><span class="p">,</span>
+    <span class="n">_SilentHandler</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">Gauge</span><span class="p">,</span> <span class="n">Histogram</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client.registry</span><span class="w"> </span><span class="kn">import</span> <span class="n">REGISTRY</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BUCKETS_HIST</span><span class="p">,</span>
+    <span class="n">OPERATION_EXPAND_METRICS</span><span class="p">,</span>
+    <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="TaskStatus">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TaskStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Status of a task for health reporting.</span>
+
+<span class="sd">    Used when reporting task outcome: OK, FATAL, CONNECTION_ERROR,</span>
+<span class="sd">    OTHER_EXCEPTION, INTERNAL, UNKNOWN. Config maps error types to these</span>
+<span class="sd">    and to an unhealthy threshold.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">OK</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">FATAL</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">CONNECTION_ERROR</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">OTHER_EXCEPTION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">INTERNAL</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="mi">5</span></div>
+
+
+
+<div class="viewcode-block" id="ErrorParser">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ErrorParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Maps exception tracebacks to error type strings and sets task status for health.&quot;&quot;&quot;</span>
+
+    <span class="n">_types</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_taskstatus2types</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="ErrorParser.init">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser.init">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">status_key</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ErrorParser</span><span class="o">.</span><span class="n">_taskstatus2types</span><span class="p">[</span><span class="n">status_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;service_errors&quot;</span><span class="p">]</span>
+            <span class="n">ErrorParser</span><span class="o">.</span><span class="n">_types</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="s2">&quot;service_errors&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="ErrorParser.parse">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser.parse">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+        <span class="n">traceback_string</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">error_type_name</span> <span class="ow">in</span> <span class="n">ErrorParser</span><span class="o">.</span><span class="n">_types</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">error_type_name</span> <span class="o">==</span> <span class="s2">&quot;other&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">error_type_name</span> <span class="ow">in</span> <span class="n">traceback_string</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">error_type_name</span>
+        <span class="k">return</span> <span class="s2">&quot;other&quot;</span></div>
+
+
+<div class="viewcode-block" id="ErrorParser.set_status">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser.set_status">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_status</span><span class="p">(</span><span class="n">error_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">get_instance</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">server</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">error_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">set_task_status</span><span class="p">(</span><span class="n">TaskStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">mapped_task_status</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">status_key</span><span class="p">,</span> <span class="n">err_list</span> <span class="ow">in</span> <span class="n">ErrorParser</span><span class="o">.</span><span class="n">_taskstatus2types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">error_type</span> <span class="ow">in</span> <span class="n">err_list</span><span class="p">:</span>
+                <span class="n">mapped_task_status</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">getattr</span><span class="p">(</span><span class="n">TaskStatus</span><span class="p">,</span> <span class="n">status_key</span><span class="p">,</span>
+                            <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">TaskStatus</span><span class="o">.</span><span class="n">OTHER_EXCEPTION</span>
+                <span class="p">)</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">mapped_task_status</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mapped_task_status</span> <span class="o">=</span> <span class="n">TaskStatus</span><span class="o">.</span><span class="n">OK</span>
+        <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">set_task_status</span><span class="p">(</span><span class="n">mapped_task_status</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="StatusParser">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.StatusParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StatusParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Returns ``failure`` or ``success`` label for processed-request stats.&quot;&quot;&quot;</span>
+
+    <span class="n">_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;failure&quot;</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="StatusParser.parse">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.StatusParser.parse">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">StatusParser</span><span class="o">.</span><span class="n">_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">error</span> <span class="k">else</span> <span class="n">StatusParser</span><span class="o">.</span><span class="n">_types</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MonitorStorage">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonitorStorage</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Async storage for monitoring state.</span>
+
+<span class="sd">    Holds stats and task status. The Prometheus registry is updated only</span>
+<span class="sd">    when :meth:`refresh_registry_for_metrics` is called (e.g. on each /metrics request).</span>
+<span class="sd">    Methods: inc_stats, set_stats, set_task_status, append_stats, add_key_value,</span>
+<span class="sd">    del_key_value, get_stats, get_statuses.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_sanitize_metric_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gauge_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current value of a gauge/counter with default labels (for combining metrics).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">metric</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">_value</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MonitorStorage.__init__">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_series</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_time</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.get_time">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_time">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_time</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.refresh_registry_for_metrics">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">refresh_registry_for_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update PROMETHEUS_METRICS_REGISTRY from current stats. Call from MetricServer on /metrics request (e.g. every 30s).&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="n">snapshot</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_registry_from_stats</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_aggregate_stats</span><span class="p">(</span><span class="n">all_stats</span><span class="p">,</span> <span class="n">show_tasks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">last_count</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">aggregated_by_key</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;tasks&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">all_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="p">{}))]}</span> <span class="k">if</span> <span class="n">show_tasks</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="p">)</span>
+        <span class="n">stats_series</span> <span class="o">=</span> <span class="n">all_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">last_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">stats_series</span> <span class="o">=</span> <span class="n">stats_series</span><span class="p">[</span><span class="o">-</span><span class="n">last_count</span><span class="p">:]</span>
+        <span class="k">for</span> <span class="n">stats_point</span> <span class="ow">in</span> <span class="n">stats_series</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">stat_key</span> <span class="ow">in</span> <span class="n">stats_point</span><span class="p">:</span>
+                <span class="n">aggregated_by_key</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">stat_key</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats_point</span><span class="p">[</span><span class="n">stat_key</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">aggregation_key</span> <span class="ow">in</span> <span class="n">aggregated_by_key</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">aggregated_by_key</span><span class="p">[</span><span class="n">aggregation_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">sum</span><span class="p">(</span><span class="n">aggregated_by_key</span><span class="p">[</span><span class="n">aggregation_key</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.0</span>
+                    <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">aggregated_by_key</span><span class="p">[</span><span class="n">aggregation_key</span><span class="p">])</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">aggregated_by_key</span><span class="p">[</span><span class="n">aggregation_key</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="n">aggregated_by_key</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_operations</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">values_to_aggregate</span><span class="p">,</span>
+        <span class="n">operation_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">skip_op_in_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">operation_names</span> <span class="o">=</span> <span class="n">operation_names</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">operation_name</span> <span class="ow">in</span> <span class="n">operation_names</span><span class="p">:</span>
+            <span class="n">aggregation_function</span> <span class="o">=</span> <span class="n">OPERATION_EXPAND_METRICS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">aggregation_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="s2">&quot;Operation </span><span class="si">%s</span><span class="s2"> not implemented&quot;</span> <span class="o">%</span> <span class="n">operation_name</span>
+                <span class="p">)</span>
+            <span class="n">operation_name_suffix_for_metric</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;_&quot;</span> <span class="k">if</span> <span class="n">operation_name</span> <span class="o">==</span> <span class="n">skip_op_in_suffix</span> <span class="k">else</span> <span class="s2">&quot;_</span><span class="si">%s</span><span class="s2">_&quot;</span> <span class="o">%</span> <span class="n">operation_name</span>
+            <span class="p">)</span>
+            <span class="n">prometheus_metric_key</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">operation_name_suffix_for_metric</span> <span class="o">+</span> <span class="n">postfix</span>
+            <span class="k">if</span> <span class="n">prometheus_metric_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">:</span>
+                <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">prometheus_metric_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+                    <span class="n">prometheus_metric_key</span><span class="p">,</span>
+                    <span class="n">prometheus_metric_key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">),</span>
+                    <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+                <span class="p">)</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">prometheus_metric_key</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">aggregation_function</span><span class="p">(</span><span class="n">values_to_aggregate</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prom_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">numeric_value</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+        <span class="n">key_parts</span> <span class="o">=</span> <span class="n">stat_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;___&quot;</span><span class="p">)</span>
+        <span class="n">metric_name_from_stat_key</span> <span class="o">=</span> <span class="n">key_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">prometheus_label_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">prometheus_label_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">label_part</span> <span class="ow">in</span> <span class="n">key_parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;Label </span><span class="si">%s</span><span class="s2"> has bad format. Must be &lt;label2name__label2value&gt;.&quot;</span><span class="p">,</span>
+                    <span class="n">label_part</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label_name_part</span><span class="p">,</span> <span class="n">label_value_part</span> <span class="o">=</span> <span class="n">label_part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">prometheus_label_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_name_part</span><span class="p">)</span>
+                <span class="n">prometheus_label_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_value_part</span><span class="p">)</span>
+        <span class="n">prometheus_metric_key_sanitized</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_metric_name</span><span class="p">(</span>
+            <span class="n">metric_name_from_stat_key</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">prometheus_metric_key_sanitized</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">:</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">prometheus_metric_key_sanitized</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+                <span class="n">prometheus_metric_key_sanitized</span><span class="p">,</span>
+                <span class="s2">&quot;This is metric `</span><span class="si">%s</span><span class="s2">` from MonitorServer.&quot;</span> <span class="o">%</span> <span class="n">metric_name_from_stat_key</span><span class="p">,</span>
+                <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(</span><span class="n">prometheus_label_names</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">prometheus_metric_key_sanitized</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">prometheus_label_values</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">numeric_value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_refresh_registry_from_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_stats</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_aggregate_stats</span><span class="p">(</span><span class="n">all_stats</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aggregation_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_prom_set_value</span><span class="p">(</span><span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span><span class="p">,</span> <span class="s2">&quot;stats_aggregation_&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_aggregate_stats</span><span class="p">(</span><span class="n">all_stats</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aggregation_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_prom_set_value</span><span class="p">(</span>
+                    <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span><span class="p">,</span> <span class="s2">&quot;stats_aggregation_last_&quot;</span>
+                <span class="p">)</span>
+        <span class="k">for</span> <span class="n">top_level_stat_key</span> <span class="ow">in</span> <span class="n">all_stats</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">top_level_stat_key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="s2">&quot;stats&quot;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">all_stats</span><span class="p">[</span><span class="n">top_level_stat_key</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_prom_set_value</span><span class="p">(</span>
+                    <span class="n">top_level_stat_key</span><span class="p">,</span> <span class="n">all_stats</span><span class="p">[</span><span class="n">top_level_stat_key</span><span class="p">],</span> <span class="s2">&quot;stats_&quot;</span>
+                <span class="p">)</span>
+        <span class="n">task_id_to_start_timestamp</span> <span class="o">=</span> <span class="n">all_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_apply_operations</span><span class="p">(</span>
+            <span class="n">task_id_to_start_timestamp</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">&quot;len&quot;</span><span class="p">],</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span>
+            <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+            <span class="n">skip_op_in_suffix</span><span class="o">=</span><span class="s2">&quot;len&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">current_timestamp_seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_apply_operations</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="n">current_timestamp_seconds</span> <span class="o">-</span> <span class="n">task_id_to_start_timestamp</span><span class="p">[</span><span class="n">task_id</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">task_id_to_start_timestamp</span>
+            <span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">],</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;current_tasks&quot;</span><span class="p">,</span>
+            <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;time_spend&quot;</span><span class="p">,</span>
+            <span class="n">skip_op_in_suffix</span><span class="o">=</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">combined_time_spend_metric_key</span> <span class="o">=</span> <span class="s2">&quot;stats_tasks_with_current_time_spend_total&quot;</span>
+        <span class="n">current_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauge_get</span><span class="p">(</span><span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;current_tasks_time_spend&quot;</span><span class="p">])</span>
+        <span class="n">spent_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauge_get</span><span class="p">(</span><span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">])</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">combined_time_spend_metric_key</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">current_val</span> <span class="o">+</span> <span class="n">spent_val</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_record_histogram_observation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">histogram_metric_key_string</span><span class="p">,</span>
+        <span class="n">observed_value</span><span class="p">,</span>
+        <span class="n">metric_prefix</span><span class="p">,</span>
+        <span class="n">bucket_type</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">key_parts</span> <span class="o">=</span> <span class="n">histogram_metric_key_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;___&quot;</span><span class="p">)</span>
+        <span class="n">metric_name_part</span><span class="p">,</span> <span class="n">label_parts</span> <span class="o">=</span> <span class="n">key_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">key_parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">histogram_label_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">histogram_label_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">label_part</span> <span class="ow">in</span> <span class="n">label_parts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;The label </span><span class="si">%s</span><span class="s2"> is not in the correct format. It should be &lt;label2name__label2value&gt;.&quot;</span><span class="p">,</span>
+                    <span class="n">label_part</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label_name_part</span><span class="p">,</span> <span class="n">label_value_part</span> <span class="o">=</span> <span class="n">label_part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">histogram_label_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_name_part</span><span class="p">)</span>
+                <span class="n">histogram_label_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_value_part</span><span class="p">)</span>
+        <span class="n">sanitized_histogram_metric_key</span> <span class="o">=</span> <span class="n">metric_prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_metric_name</span><span class="p">(</span>
+            <span class="n">metric_name_part</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">sanitized_histogram_metric_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">:</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">sanitized_histogram_metric_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+                <span class="n">sanitized_histogram_metric_key</span><span class="p">,</span>
+                <span class="s2">&quot;this is hist metric `</span><span class="si">%s</span><span class="s2">` in stats from MonitorServers&quot;</span>
+                <span class="o">%</span> <span class="n">metric_name_part</span><span class="p">,</span>
+                <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(</span><span class="n">histogram_label_names</span><span class="p">),</span>
+                <span class="n">buckets</span><span class="o">=</span><span class="n">BUCKETS_HIST</span><span class="p">[</span><span class="n">bucket_type</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">sanitized_histogram_metric_key</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">histogram_label_values</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">observed_value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MonitorStorage.inc_stats">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.inc_stats">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">inc_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stat_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">count</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.set_stats">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.set_stats">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.set_task_status">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.set_task_status">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_task_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="n">old_status</span><span class="p">,</span> <span class="n">old_series</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status_series</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">task_type</span><span class="p">,</span> <span class="p">(</span><span class="n">TaskStatus</span><span class="o">.</span><span class="n">OK</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">old_status</span> <span class="o">==</span> <span class="n">status</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">new_status</span><span class="p">,</span> <span class="n">new_series</span> <span class="o">=</span> <span class="n">old_status</span><span class="p">,</span> <span class="n">old_series</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_status</span><span class="p">,</span> <span class="n">new_series</span> <span class="o">=</span> <span class="n">status</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_status_series</span><span class="p">[</span><span class="n">task_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_status</span><span class="p">,</span> <span class="n">new_series</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;series.&quot;</span> <span class="o">+</span> <span class="n">task_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_series</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.append_stats">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.append_stats">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">append_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">,</span> <span class="n">max_count</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stat_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stat_value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">max_count</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">][</span><span class="o">-</span><span class="n">max_count</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stat_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">histogram_stat_key</span><span class="p">,</span> <span class="n">histogram_observed_value</span> <span class="ow">in</span> <span class="n">stat_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">bucket_type</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">histogram_stat_key</span> <span class="k">else</span> <span class="s2">&quot;size&quot;</span>
+                    <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">histogram_stat_key</span> <span class="ow">or</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">histogram_stat_key</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_record_histogram_observation</span><span class="p">(</span>
+                            <span class="n">histogram_stat_key</span><span class="p">,</span>
+                            <span class="n">histogram_observed_value</span><span class="p">,</span>
+                            <span class="s2">&quot;stats_hist_&quot;</span><span class="p">,</span>
+                            <span class="n">bucket_type</span><span class="o">=</span><span class="n">bucket_type</span><span class="p">,</span>
+                        <span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">stat_key</span> <span class="ow">or</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">stat_key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">stat_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_record_histogram_observation</span><span class="p">(</span>
+                    <span class="n">stat_key</span><span class="p">,</span>
+                    <span class="n">stat_value</span><span class="p">,</span>
+                    <span class="s2">&quot;stats_hist_&quot;</span><span class="p">,</span>
+                    <span class="n">bucket_type</span><span class="o">=</span><span class="s2">&quot;time&quot;</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">stat_key</span> <span class="k">else</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span>
+                <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.add_key_value">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.add_key_value">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_key_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_key</span><span class="p">,</span> <span class="n">key_value_tuple</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">section_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">section_key</span> <span class="o">==</span> <span class="s2">&quot;tasks&quot;</span><span class="p">:</span>
+                <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;started_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                    <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">][</span><span class="n">key_value_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">key_value_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.del_key_value">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.del_key_value">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">del_key_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_key</span><span class="p">,</span> <span class="n">key_to_remove</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">section_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="ow">and</span> <span class="n">key_to_remove</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">section_key</span> <span class="o">==</span> <span class="s2">&quot;tasks&quot;</span><span class="p">:</span>
+                    <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;tasks&quot;</span><span class="p">][</span><span class="n">key_to_remove</span><span class="p">])</span>
+                    <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;completed_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">][</span><span class="n">key_to_remove</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.get_stats">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_stats">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorStorage.get_statuses">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_statuses">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_statuses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_status_series</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MetricServer">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MetricServer</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;HTTP server that serves /metrics.</span>
+
+<span class="sd">    On each /metrics request refreshes the Prometheus registry from the</span>
+<span class="sd">    provided storage, then exports. Use :meth:`run_in_thread` to start</span>
+<span class="sd">    in a daemon thread on a given port.</span>
+
+<span class="sd">    :param registry: Prometheus registry to export. Default ``REGISTRY``.</span>
+<span class="sd">    :param disable_compression: If True, disable response compression.</span>
+<span class="sd">    :param storage: Optional :class:`MonitorStorage`; if set, registry is refreshed from it on each request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="MetricServer.__init__">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry</span><span class="o">=</span><span class="n">REGISTRY</span><span class="p">,</span> <span class="n">disable_compression</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span> <span class="o">=</span> <span class="n">registry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_disable_compression</span> <span class="o">=</span> <span class="n">disable_compression</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span> <span class="o">=</span> <span class="n">storage</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bake_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build (status, headers, output) for /metrics from self._registry.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_bake_output</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span><span class="p">,</span>
+            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_ACCEPT&quot;</span><span class="p">),</span>
+            <span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;HTTP_ACCEPT_ENCODING&quot;</span><span class="p">),</span>
+            <span class="n">parse_qs</span><span class="p">(</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;QUERY_STRING&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_disable_compression</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="MetricServer.get_wsgi_app">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.get_wsgi_app">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_wsgi_app</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return WSGI app: on /metrics refreshes registry from storage then bakes output.&quot;&quot;&quot;</span>
+        <span class="n">storage</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">wsgi_application</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PATH_INFO&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;/metrics&quot;</span><span class="p">:</span>
+                <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;503 Service Unavailable&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)])</span>
+                <span class="k">return</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">storage</span><span class="p">:</span>
+                <span class="n">storage</span><span class="o">.</span><span class="n">refresh_registry_for_metrics</span><span class="p">()</span>
+            <span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bake_response</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+            <span class="n">start_response</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">output</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">wsgi_application</span></div>
+
+
+<div class="viewcode-block" id="MetricServer.run_in_thread">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.run_in_thread">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_in_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start HTTP server in a daemon thread. Returns the server object.&quot;&quot;&quot;</span>
+        <span class="n">wsgi_app</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_wsgi_app</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">http_server</span> <span class="o">=</span> <span class="n">make_server</span><span class="p">(</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">port</span><span class="p">,</span>
+                    <span class="n">wsgi_app</span><span class="p">,</span>
+                    <span class="n">ThreadingWSGIServer</span><span class="p">,</span>
+                    <span class="n">handler_class</span><span class="o">=</span><span class="n">_SilentHandler</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Start metric server on port: </span><span class="si">%s</span><span class="s2">.&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+        <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">http_server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">)</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">http_server</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MonitorServer">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MonitorServer</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Singleton entry point for monitoring.</span>
+
+<span class="sd">    Holds :class:`MonitorStorage`, runs :class:`MetricServer` in a thread,</span>
+<span class="sd">    forwards all stats/status calls to storage. Call :meth:`run` with server</span>
+<span class="sd">    config (port, errors, service info) to start the metrics HTTP server.</span>
+<span class="sd">    Use :meth:`get_instance` to get the singleton from decorators or app code.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; server = MonitorServer()</span>
+<span class="sd">    &gt;&gt;&gt; server.run(server_config={&quot;port&quot;: 9999, &quot;errors&quot;: {...}}, max_workers=4)</span>
+<span class="sd">    &gt;&gt;&gt; await server.inc_stats(&quot;request___method__MyMethod&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__instance</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">__time</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_labels</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">get_time</span><span class="p">()]</span> <span class="o">+</span> <span class="p">(</span><span class="n">extra</span> <span class="ow">or</span> <span class="p">[])</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_label_names</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;inittime&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">extra</span> <span class="ow">or</span> <span class="p">[])</span>
+
+<div class="viewcode-block" id="MonitorServer.get_instance">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_instance">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_instance</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">__instance</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.get_time">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_time">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_time</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">__time</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.wait_for_ending_tasks">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.wait_for_ending_tasks">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">wait_for_ending_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait until no tasks are in progress. Use: await server.wait_for_ending_tasks().&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.__init__">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">__instance</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;This class is a singleton!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span> <span class="o">=</span> <span class="n">MonitorStorage</span><span class="p">()</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">__instance</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">__time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.set_stat_sync">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.set_stat_sync">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_stat_sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set one stat key (sync, for init from sync context).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_init_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;started_total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+            <span class="s2">&quot;started&quot;</span><span class="p">,</span> <span class="s2">&quot;Total number of started tasks.&quot;</span><span class="p">,</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;started_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;completed_total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+            <span class="s2">&quot;completed&quot;</span><span class="p">,</span> <span class="s2">&quot;Total number of completed tasks.&quot;</span><span class="p">,</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;completed_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;tasks_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+            <span class="s2">&quot;tasks_count&quot;</span><span class="p">,</span> <span class="s2">&quot;The total number of tasks currently being processed.&quot;</span><span class="p">,</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;tasks_count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;current_tasks_time_spend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+            <span class="s2">&quot;current_tasks_time_spend&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Total time spent processing current tasks.&quot;</span><span class="p">,</span>
+            <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;current_tasks_max_time_spend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+            <span class="s2">&quot;current_tasks_max_time_spend&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Maximum processing time for current tasks.&quot;</span><span class="p">,</span>
+            <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;current_tasks_time_spend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+            <span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Total time spent on completed tasks.&quot;</span><span class="p">,</span>
+            <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span>
+            <span class="s2">&quot;stats_tasks_with_current_time_spend_total&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+            <span class="s2">&quot;stats_tasks_with_current_time_spend_total&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Total time spent processing current and previous tasks.&quot;</span><span class="p">,</span>
+            <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_with_current_time_spend_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span>
+            <span class="s2">&quot;stats_tasks_time_spent_quantile&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
+            <span class="s2">&quot;tasks_time_spent_quantile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Time spent on completing tasks.&quot;</span><span class="p">,</span>
+            <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+            <span class="n">buckets</span><span class="o">=</span><span class="n">BUCKETS_HIST</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">service_info_key</span> <span class="ow">in</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_info</span><span class="p">:</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">service_info_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+                <span class="n">service_info_key</span><span class="p">,</span>
+                <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_info</span><span class="p">[</span><span class="n">service_info_key</span><span class="p">][</span><span class="s2">&quot;info&quot;</span><span class="p">],</span>
+                <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">service_info_key</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_info</span><span class="p">[</span><span class="n">service_info_key</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="MonitorServer.run">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.run">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hpa_max_workers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">server_config</span> <span class="o">=</span> <span class="n">server_config</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">http_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">server_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="mi">9999</span><span class="p">))</span>
+        <span class="n">configured_max_workers</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">hpa_max_workers</span> <span class="k">if</span> <span class="n">hpa_max_workers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">max_workers</span>
+        <span class="p">)</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">async_service_threads</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">max_workers</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_threads</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
+            <span class="k">lambda</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">max_workers</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">server_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;service info&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_info</span><span class="p">[</span><span class="s2">&quot;service_threads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;info&quot;</span><span class="p">:</span> <span class="s2">&quot;number of service threads setups by the config&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">configured_max_workers</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">series_unhealthy</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;CONNECTION_ERROR&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;service_errors&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;unhealthy&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+            <span class="s2">&quot;FATAL&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;service_errors&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;unhealthy&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+            <span class="s2">&quot;INTERNAL&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;service_errors&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;unhealthy&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+            <span class="s2">&quot;OTHER_EXCEPTION&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;service_errors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;other&quot;</span><span class="p">],</span> <span class="s2">&quot;unhealthy&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+            <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;service_errors&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;unhealthy&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+        <span class="p">}</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">server_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errors&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="k">for</span> <span class="n">task_status_enum</span> <span class="ow">in</span> <span class="n">TaskStatus</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">task_status_enum</span> <span class="o">==</span> <span class="n">TaskStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">MonitorServer</span><span class="o">.</span><span class="n">series_unhealthy</span><span class="p">[</span><span class="n">task_status_enum</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                <span class="n">MonitorServer</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="n">task_status_enum</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;unhealthy&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">__time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_metrics</span><span class="p">()</span>
+        <span class="n">MetricServer</span><span class="p">(</span><span class="n">registry</span><span class="o">=</span><span class="n">REGISTRY</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">)</span><span class="o">.</span><span class="n">run_in_thread</span><span class="p">(</span><span class="n">http_port</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.inc_stats">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.inc_stats">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">inc_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">inc_stats</span><span class="p">(</span><span class="n">stat_key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.set_task_status">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.set_task_status">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_task_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">task_type</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">set_task_status</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">task_type</span><span class="o">=</span><span class="n">task_type</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.append_stats">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.append_stats">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">append_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">,</span> <span class="n">max_count</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">append_stats</span><span class="p">(</span><span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">,</span> <span class="n">max_count</span><span class="o">=</span><span class="n">max_count</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.add_key_value">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.add_key_value">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_key_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_key</span><span class="p">,</span> <span class="n">key_value_tuple</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">add_key_value</span><span class="p">(</span><span class="n">section_key</span><span class="p">,</span> <span class="n">key_value_tuple</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.del_key_value">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.del_key_value">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">del_key_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_key</span><span class="p">,</span> <span class="n">key_to_remove</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">del_key_value</span><span class="p">(</span><span class="n">section_key</span><span class="p">,</span> <span class="n">key_to_remove</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.get_stats">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_stats">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="MonitorServer.get_statuses">
+<a class="viewcode-back" href="../../redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_statuses">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_statuses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">get_statuses</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, REDUP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -45,12 +45,31 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Packages:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#redup_servicekit.config.ConfigSingleton"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#redup_servicekit.logging.init_console_log"><code class="docutils literal notranslate"><span class="pre">init_console_log()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="health.html">gRPC Health Checks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics (Prometheus)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Monitoring</a></li>
-<li class="toctree-l1"><a class="reference internal" href="grpc.html">gRPC utilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Monitoring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.monitoring.TaskStatus"><code class="docutils literal notranslate"><span class="pre">TaskStatus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.monitoring.ErrorParser"><code class="docutils literal notranslate"><span class="pre">ErrorParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.monitoring.StatusParser"><code class="docutils literal notranslate"><span class="pre">StatusParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.monitoring.MonitorStorage"><code class="docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.monitoring.MetricServer"><code class="docutils literal notranslate"><span class="pre">MetricServer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.monitoring.MonitorServer"><code class="docutils literal notranslate"><span class="pre">MonitorServer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grpc.html">gRPC utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.BasicAsyncClient"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper"><code class="docutils literal notranslate"><span class="pre">aio_grpc_method_wrapper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="redup_servicekit.html">redup_servicekit package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#submodules">Submodules</a></li>
@@ -82,8 +101,279 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="monitoring">
-<h1>Monitoring<a class="headerlink" href="#monitoring" title="Link to this heading"></a></h1>
+  <section id="module-redup_servicekit.monitoring">
+<span id="monitoring"></span><h1>Monitoring<a class="headerlink" href="#module-redup_servicekit.monitoring" title="Link to this heading"></a></h1>
+<p>Prometheus metrics collection and HTTP server for /metrics.</p>
+<p>The <a class="reference internal" href="redup_servicekit.monitoring.html#module-redup_servicekit.monitoring" title="redup_servicekit.monitoring"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.monitoring</span></code></a> module contains:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.TaskStatus" title="redup_servicekit.monitoring.TaskStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.TaskStatus</span></code></a> — enum for task outcome (OK, FATAL, etc.)</p></li>
+<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.ErrorParser" title="redup_servicekit.monitoring.ErrorParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.ErrorParser</span></code></a> — map exceptions to error types and health status</p></li>
+<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.StatusParser" title="redup_servicekit.monitoring.StatusParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.StatusParser</span></code></a> — success/failure label for stats</p></li>
+<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MonitorStorage</span></code></a> — async storage for stats; registry updated on /metrics</p></li>
+<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer" title="redup_servicekit.monitoring.MetricServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MetricServer</span></code></a> — HTTP server that serves /metrics</p></li>
+<li><p><a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer" title="redup_servicekit.monitoring.MonitorServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.monitoring.MonitorServer</span></code></a> — singleton entry point; runs MetricServer, forwards to storage</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">TaskStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#TaskStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.TaskStatus" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Status of a task for health reporting.</p>
+<p>Used when reporting task outcome: OK, FATAL, CONNECTION_ERROR,
+OTHER_EXCEPTION, INTERNAL, UNKNOWN. Config maps error types to these
+and to an unhealthy threshold.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus.OK">
+<span class="sig-name descname"><span class="pre">OK</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></span><a class="headerlink" href="#redup_servicekit.monitoring.TaskStatus.OK" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus.FATAL">
+<span class="sig-name descname"><span class="pre">FATAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></span><a class="headerlink" href="#redup_servicekit.monitoring.TaskStatus.FATAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus.CONNECTION_ERROR">
+<span class="sig-name descname"><span class="pre">CONNECTION_ERROR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#redup_servicekit.monitoring.TaskStatus.CONNECTION_ERROR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus.OTHER_EXCEPTION">
+<span class="sig-name descname"><span class="pre">OTHER_EXCEPTION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></span><a class="headerlink" href="#redup_servicekit.monitoring.TaskStatus.OTHER_EXCEPTION" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus.INTERNAL">
+<span class="sig-name descname"><span class="pre">INTERNAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></span><a class="headerlink" href="#redup_servicekit.monitoring.TaskStatus.INTERNAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.TaskStatus.UNKNOWN">
+<span class="sig-name descname"><span class="pre">UNKNOWN</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></span><a class="headerlink" href="#redup_servicekit.monitoring.TaskStatus.UNKNOWN" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.ErrorParser">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ErrorParser</span></span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#ErrorParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.ErrorParser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Maps exception tracebacks to error type strings and sets task status for health.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.ErrorParser.init">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#ErrorParser.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.ErrorParser.init" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.ErrorParser.parse">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#ErrorParser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.ErrorParser.parse" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.ErrorParser.set_status">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#ErrorParser.set_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.ErrorParser.set_status" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.StatusParser">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">StatusParser</span></span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#StatusParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.StatusParser" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">failure</span></code> or <code class="docutils literal notranslate"><span class="pre">success</span></code> label for processed-request stats.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.StatusParser.parse">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#StatusParser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.StatusParser.parse" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">MonitorStorage</span></span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Async storage for monitoring state.</p>
+<p>Holds stats and task status. The Prometheus registry is updated only
+when <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics" title="redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">refresh_registry_for_metrics()</span></code></a> is called (e.g. on each /metrics request).
+Methods: inc_stats, set_stats, set_task_status, append_stats, add_key_value,
+del_key_value, get_stats, get_statuses.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.get_time">
+<span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.get_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics">
+<span class="sig-name descname"><span class="pre">refresh_registry_for_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.refresh_registry_for_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics" title="Link to this definition"></a></dt>
+<dd><p>Update PROMETHEUS_METRICS_REGISTRY from current stats. Call from MetricServer on /metrics request (e.g. every 30s).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.inc_stats">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">inc_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.inc_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.inc_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.set_stats">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.set_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.set_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.set_task_status">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_task_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.set_task_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.set_task_status" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.append_stats">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">append_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stat_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.append_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.append_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.add_key_value">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">add_key_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_value_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.add_key_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.add_key_value" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.del_key_value">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">del_key_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_to_remove</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.del_key_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.del_key_value" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.get_stats">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.get_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.get_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorStorage.get_statuses">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_statuses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorStorage.get_statuses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorStorage.get_statuses" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MetricServer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">MetricServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">prometheus_client.registry.REGISTRY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_compression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MetricServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MetricServer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>HTTP server that serves /metrics.</p>
+<p>On each /metrics request refreshes the Prometheus registry from the
+provided storage, then exports. Use <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer.run_in_thread" title="redup_servicekit.monitoring.MetricServer.run_in_thread"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run_in_thread()</span></code></a> to start
+in a daemon thread on a given port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>registry</strong> – Prometheus registry to export. Default <code class="docutils literal notranslate"><span class="pre">REGISTRY</span></code>.</p></li>
+<li><p><strong>disable_compression</strong> – If True, disable response compression.</p></li>
+<li><p><strong>storage</strong> – Optional <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a>; if set, registry is refreshed from it on each request.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MetricServer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">registry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">prometheus_client.registry.REGISTRY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disable_compression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MetricServer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MetricServer.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MetricServer.get_wsgi_app">
+<span class="sig-name descname"><span class="pre">get_wsgi_app</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MetricServer.get_wsgi_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MetricServer.get_wsgi_app" title="Link to this definition"></a></dt>
+<dd><p>Return WSGI app: on /metrics refreshes registry from storage then bakes output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MetricServer.run_in_thread">
+<span class="sig-name descname"><span class="pre">run_in_thread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MetricServer.run_in_thread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MetricServer.run_in_thread" title="Link to this definition"></a></dt>
+<dd><p>Start HTTP server in a daemon thread. Returns the server object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">MonitorServer</span></span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Singleton entry point for monitoring.</p>
+<p>Holds <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorStorage" title="redup_servicekit.monitoring.MonitorStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a>, runs <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MetricServer" title="redup_servicekit.monitoring.MetricServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetricServer</span></code></a> in a thread,
+forwards all stats/status calls to storage. Call <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.run" title="redup_servicekit.monitoring.MonitorServer.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> with server
+config (port, errors, service info) to start the metrics HTTP server.
+Use <a class="reference internal" href="redup_servicekit.monitoring.html#redup_servicekit.monitoring.MonitorServer.get_instance" title="redup_servicekit.monitoring.MonitorServer.get_instance"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_instance()</span></code></a> to get the singleton from decorators or app code.</p>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="n">MonitorServer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">server_config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">9999</span><span class="p">,</span> <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}},</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">inc_stats</span><span class="p">(</span><span class="s2">&quot;request___method__MyMethod&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.get_instance">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_instance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.get_instance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.get_instance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.get_time">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.get_time" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.wait_for_ending_tasks">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">wait_for_ending_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.wait_for_ending_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.wait_for_ending_tasks" title="Link to this definition"></a></dt>
+<dd><p>Wait until no tasks are in progress. Use: await server.wait_for_ending_tasks().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.set_stat_sync">
+<span class="sig-name descname"><span class="pre">set_stat_sync</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.set_stat_sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.set_stat_sync" title="Link to this definition"></a></dt>
+<dd><p>Set one stat key (sync, for init from sync context).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hpa_max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.run" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.inc_stats">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">inc_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.inc_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.inc_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.set_task_status">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_task_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'default'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.set_task_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.set_task_status" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.append_stats">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">append_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stat_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stat_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.append_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.append_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.add_key_value">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">add_key_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_value_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.add_key_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.add_key_value" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.del_key_value">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">del_key_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_to_remove</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.del_key_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.del_key_value" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.get_stats">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_stats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.get_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.get_stats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.monitoring.MonitorServer.get_statuses">
+<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_statuses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/monitoring.html#MonitorServer.get_statuses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.monitoring.MonitorServer.get_statuses" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 
 

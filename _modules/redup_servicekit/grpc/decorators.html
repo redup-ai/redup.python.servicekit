@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>redup_servicekit.grpc.decorators &mdash; redup.python.servicekit 1.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1ed6394b"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            redup.python.servicekit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Packages:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../config.html#redup_servicekit.config.ConfigSingleton"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging.html">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../logging.html#redup_servicekit.logging.init_console_log"><code class="docutils literal notranslate"><span class="pre">init_console_log()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../health.html">gRPC Health Checks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../metrics.html">Metrics (Prometheus)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring.html">Monitoring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../monitoring.html#redup_servicekit.monitoring.TaskStatus"><code class="docutils literal notranslate"><span class="pre">TaskStatus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../monitoring.html#redup_servicekit.monitoring.ErrorParser"><code class="docutils literal notranslate"><span class="pre">ErrorParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../monitoring.html#redup_servicekit.monitoring.StatusParser"><code class="docutils literal notranslate"><span class="pre">StatusParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../monitoring.html#redup_servicekit.monitoring.MonitorStorage"><code class="docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../monitoring.html#redup_servicekit.monitoring.MetricServer"><code class="docutils literal notranslate"><span class="pre">MetricServer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../monitoring.html#redup_servicekit.monitoring.MonitorServer"><code class="docutils literal notranslate"><span class="pre">MonitorServer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grpc.html">gRPC utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../grpc.html#redup_servicekit.grpc.BasicAsyncClient"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper"><code class="docutils literal notranslate"><span class="pre">aio_grpc_method_wrapper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../redup_servicekit.html">redup_servicekit package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../redup_servicekit.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../redup_servicekit.html#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">redup.python.servicekit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">redup_servicekit.grpc.decorators</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for redup_servicekit.grpc.decorators</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;gRPC server decorators for metrics and health integration.</span>
+
+<span class="sd">The :mod:`redup_servicekit.grpc.decorators` module contains:</span>
+
+<span class="sd">- :func:`redup_servicekit.grpc.decorators.grpc_init_wrapper` — wrap servicer init; register per-method stats</span>
+<span class="sd">- :func:`redup_servicekit.grpc.decorators.aio_grpc_method_wrapper` — wrap async handlers; record metrics and health</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pickle</span><span class="w"> </span><span class="kn">import</span> <span class="n">dumps</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROMETHEUS_METRICS_REGISTRY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..monitoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">ErrorParser</span><span class="p">,</span> <span class="n">MonitorServer</span><span class="p">,</span> <span class="n">StatusParser</span>
+
+
+<div class="viewcode-block" id="grpc_init_wrapper">
+<a class="viewcode-back" href="../../../redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.grpc_init_wrapper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">grpc_init_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Wrap the function that initializes and runs the gRPC server.</span>
+
+<span class="sd">    Calls :meth:`ErrorParser.init` and pre-registers per-method stats</span>
+<span class="sd">    for all public methods of the servicer instance (args[0]). Use on</span>
+<span class="sd">    your init/run function that creates the server and adds the servicer.</span>
+
+<span class="sd">    :param func: Callable that takes servicer (or server) and runs the server.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init_and_run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">ErrorParser</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">get_instance</span><span class="p">()</span>
+        <span class="n">service_instance</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">service_instance</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">service_instance</span><span class="p">,</span> <span class="n">name</span><span class="p">)):</span>
+                    <span class="k">continue</span>
+                <span class="n">server</span><span class="o">.</span><span class="n">set_stat_sync</span><span class="p">(</span><span class="s2">&quot;request___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">outcome_status</span> <span class="ow">in</span> <span class="n">StatusParser</span><span class="o">.</span><span class="n">_types</span><span class="p">:</span>
+                    <span class="n">server</span><span class="o">.</span><span class="n">set_stat_sync</span><span class="p">(</span>
+                        <span class="s2">&quot;processed___method__</span><span class="si">%s</span><span class="s2">___status__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">outcome_status</span><span class="p">),</span> <span class="mi">0</span>
+                    <span class="p">)</span>
+                <span class="k">for</span> <span class="n">error_kind</span> <span class="ow">in</span> <span class="n">ErrorParser</span><span class="o">.</span><span class="n">_types</span><span class="p">:</span>
+                    <span class="n">server</span><span class="o">.</span><span class="n">set_stat_sync</span><span class="p">(</span>
+                        <span class="s2">&quot;errors___method__</span><span class="si">%s</span><span class="s2">___type__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">error_kind</span><span class="p">),</span> <span class="mi">0</span>
+                    <span class="p">)</span>
+                <span class="n">server</span><span class="o">.</span><span class="n">set_stat_sync</span><span class="p">(</span><span class="s2">&quot;request_size___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">server</span><span class="o">.</span><span class="n">set_stat_sync</span><span class="p">(</span><span class="s2">&quot;response_size___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">init_and_run</span></div>
+
+
+
+<div class="viewcode-block" id="aio_grpc_method_wrapper">
+<a class="viewcode-back" href="../../../redup_servicekit.grpc.decorators.html#redup_servicekit.grpc.aio_grpc_method_wrapper">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">aio_grpc_method_wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Wrap an async gRPC handler to record metrics and health.</span>
+
+<span class="sd">    For each call: increments request counter, records task start/end,</span>
+<span class="sd">    measures request/response size and duration, records success/failure</span>
+<span class="sd">    and error type, updates health via :meth:`ErrorParser.set_status`.</span>
+<span class="sd">    Injects ``kwargs[&quot;info&quot;]`` (context, time_remaining) and</span>
+<span class="sd">    ``kwargs[&quot;metrics&quot;]`` (dict for custom metrics to merge into stats).</span>
+
+<span class="sd">    :param func: Async handler with signature (self, request, context, **kwargs).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_with_metrics</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">rpc_method_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="s2">&quot;UnknownObject&quot;</span><span class="p">)</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">get_instance</span><span class="p">()</span>
+        <span class="n">request_trace_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+        <span class="n">request_start_timestamp_seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">inc_stats</span><span class="p">(</span><span class="s2">&quot;request___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">add_key_value</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">request_trace_id</span><span class="p">,</span> <span class="n">request_start_timestamp_seconds</span><span class="p">))</span>
+
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+        <span class="n">request_counters</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;request_size___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]))}</span>
+        <span class="n">grpc_servicer_context</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">grpc_servicer_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;FakeContext&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">grpc_servicer_context</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">grpc_servicer_context</span><span class="p">,</span> <span class="s2">&quot;time_remaining&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">deadline_remaining_seconds</span> <span class="o">=</span> <span class="n">grpc_servicer_context</span><span class="o">.</span><span class="n">time_remaining</span><span class="p">()</span>
+            <span class="n">request_counters</span><span class="p">[</span><span class="s2">&quot;time_remaining_time___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">deadline_remaining_seconds</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;time_remaining&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">deadline_remaining_seconds</span> <span class="o">-</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">request_start_timestamp_seconds</span><span class="p">))</span> <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">request_start_timestamp_seconds</span> <span class="o">&lt;</span> <span class="n">deadline_remaining_seconds</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;time_remaining&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
+
+        <span class="n">custom_metrics_from_handler</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">custom_metrics_from_handler</span>
+        <span class="n">request_failed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">error_status_for_health</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spent_quantile&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">time</span><span class="p">():</span>
+                <span class="k">async</span> <span class="k">with</span> <span class="n">MonitorServer</span><span class="o">.</span><span class="n">async_service_threads</span><span class="p">[</span><span class="n">rpc_method_name</span><span class="p">]:</span>
+                    <span class="n">handler_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">request_counters</span><span class="p">[</span><span class="s2">&quot;response_size___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">handler_result</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">handler_result</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">caught_exception</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+            <span class="n">request_failed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">error_status_for_health</span> <span class="o">=</span> <span class="n">ErrorParser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">caught_exception</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">inc_stats</span><span class="p">(</span><span class="s2">&quot;errors___method__</span><span class="si">%s</span><span class="s2">___type__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rpc_method_name</span><span class="p">,</span> <span class="n">error_status_for_health</span><span class="p">))</span>
+            <span class="k">raise</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">del_key_value</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="n">request_trace_id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_value</span> <span class="ow">in</span> <span class="n">custom_metrics_from_handler</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">request_counters</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">metric_name</span><span class="p">,</span> <span class="n">rpc_method_name</span><span class="p">)]</span> <span class="o">=</span> <span class="n">metric_value</span>
+            <span class="n">request_counters</span><span class="p">[</span><span class="s2">&quot;time full___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">request_start_timestamp_seconds</span>
+            <span class="k">if</span> <span class="n">grpc_servicer_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;FakeContext&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">grpc_servicer_context</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">grpc_servicer_context</span><span class="p">,</span> <span class="s2">&quot;time_remaining&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">request_counters</span><span class="p">[</span><span class="s2">&quot;time_remaining_after_time___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc_servicer_context</span><span class="o">.</span><span class="n">time_remaining</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">inc_stats</span><span class="p">(</span><span class="s2">&quot;processed___method__</span><span class="si">%s</span><span class="s2">___status__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rpc_method_name</span><span class="p">,</span> <span class="n">StatusParser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">request_failed</span><span class="p">)))</span>
+                <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">append_stats</span><span class="p">(</span><span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="n">request_counters</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">ErrorParser</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">error_status_for_health</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">run_with_metrics</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, REDUP.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -45,12 +45,31 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Packages:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#redup_servicekit.config.ConfigSingleton"><code class="docutils literal notranslate"><span class="pre">ConfigSingleton</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#redup_servicekit.logging.init_console_log"><code class="docutils literal notranslate"><span class="pre">init_console_log()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="health.html">gRPC Health Checks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics (Prometheus)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a></li>
-<li class="toctree-l1"><a class="reference internal" href="grpc.html">gRPC utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring.html">Monitoring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.TaskStatus"><code class="docutils literal notranslate"><span class="pre">TaskStatus</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.ErrorParser"><code class="docutils literal notranslate"><span class="pre">ErrorParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.StatusParser"><code class="docutils literal notranslate"><span class="pre">StatusParser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.MonitorStorage"><code class="docutils literal notranslate"><span class="pre">MonitorStorage</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.MetricServer"><code class="docutils literal notranslate"><span class="pre">MetricServer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring.html#redup_servicekit.monitoring.MonitorServer"><code class="docutils literal notranslate"><span class="pre">MonitorServer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grpc.html">gRPC utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.BasicAsyncClient"><code class="docutils literal notranslate"><span class="pre">BasicAsyncClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper"><code class="docutils literal notranslate"><span class="pre">aio_grpc_method_wrapper()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html#redup_servicekit.grpc.grpc_init_wrapper"><code class="docutils literal notranslate"><span class="pre">grpc_init_wrapper()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="redup_servicekit.html">redup_servicekit package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#subpackages">Subpackages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="redup_servicekit.html#submodules">Submodules</a></li>
@@ -84,6 +103,100 @@
              
   <section id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h1>
+<p id="module-redup_servicekit.config">Configuration singleton for YAML config with merge and environment overrides.</p>
+<p>The <a class="reference internal" href="redup_servicekit.config.html#module-redup_servicekit.config" title="redup_servicekit.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.config</span></code></a> module contains:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="redup_servicekit.config.html#redup_servicekit.config.ConfigSingleton" title="redup_servicekit.config.ConfigSingleton"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.config.ConfigSingleton</span></code></a></p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="redup_servicekit.config.ConfigSingleton">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ConfigSingleton</span></span><a class="reference internal" href="_modules/redup_servicekit/config.html#ConfigSingleton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.config.ConfigSingleton" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Singleton for loading and merging YAML configuration.</p>
+<p>Supports deep merge of additional YAML files or dicts, and override of
+config values from environment variables. Use <code class="docutils literal notranslate"><span class="pre">___</span></code> (triple underscore)
+in env names for nesting; use <code class="docutils literal notranslate"><span class="pre">__</span></code> (double) for spaces in key names.
+Comma-separated env values become lists.</p>
+<p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">redup_servicekit.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigSingleton</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ConfigSingleton</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/config/config.yaml&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ConfigSingleton</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/config/config.local.yaml&quot;</span><span class="p">))</span>  <span class="c1"># if exists</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ConfigSingleton</span><span class="o">.</span><span class="n">inject_os_envs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">ConfigSingleton</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.config.ConfigSingleton.load">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/config.html#ConfigSingleton.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.config.ConfigSingleton.load" title="Link to this definition"></a></dt>
+<dd><p>Load configuration from a YAML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_path</strong> (<em>str</em><em> or </em><em>path-like</em>) – Path to a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded config as a dict.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the path does not exist or is not a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.config.ConfigSingleton.get">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/config.html#ConfigSingleton.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.config.ConfigSingleton.get" title="Link to this definition"></a></dt>
+<dd><p>Return the current configuration dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The config dict.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If configuration has not been loaded.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.config.ConfigSingleton.merge">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/config.html#ConfigSingleton.merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.config.ConfigSingleton.merge" title="Link to this definition"></a></dt>
+<dd><p>Merge another YAML file or dict into the current config (deep merge).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> (<em>str</em><em>, </em><em>path-like</em><em>, or </em><em>dict</em>) – Path to a YAML file or a dict to merge in.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If config not initialized or path does not exist.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="redup_servicekit.config.ConfigSingleton.inject_os_envs">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">inject_os_envs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/config.html#ConfigSingleton.inject_os_envs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.config.ConfigSingleton.inject_os_envs" title="Link to this definition"></a></dt>
+<dd><p>Override config values from environment variables.</p>
+<p>Env names like <code class="docutils literal notranslate"><span class="pre">section___subsection___key</span></code> map to nested keys;
+<code class="docutils literal notranslate"><span class="pre">__</span></code> in a segment is replaced by space in the key name.
+Comma-separated values become lists. Only keys already present
+in the config are overridden.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
