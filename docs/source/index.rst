@@ -6,6 +6,7 @@ Welcome to redup.python.servicekit
 .. toctree::
    :maxdepth: 1
    :caption: Home
+
    index
 
 .. toctree::
