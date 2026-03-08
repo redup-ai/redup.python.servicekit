@@ -40,7 +40,20 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Packages:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Get Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_client.html">Example: gRPC client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example_client.html#see-also">See also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_server.html">Example: gRPC server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../example_server.html#servicer-and-worker">Servicer and worker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example_server.html#entry-point-and-config">Entry point and config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../example_server.html#see-also">See also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../redup_servicekit.html">redup-servicekit</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../config.html">Configuration</a></li>
@@ -108,7 +121,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">BasicAsyncClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Async gRPC client with on-demand channels, TLS and compression.</span>
 
-<span class="sd">    :param host: Server address (e.g. ``localhost:50051`` or ``https://service:443``).</span>
+<span class="sd">    :param host: Server address with protocol: ``grpc://host:port`` (non-TLS) or ``https://host:port`` (TLS). Do not omit the scheme.</span>
 <span class="sd">    :type host: str</span>
 <span class="sd">    :param ServiceStub: Generated gRPC stub class (e.g. ``MyServiceStub``).</span>
 <span class="sd">    :param max_message_length: Max send/receive message length in bytes. Default 100 MiB.</span>
@@ -121,7 +134,7 @@
 <span class="sd">    Example:</span>
 
 <span class="sd">    &gt;&gt;&gt; from redup_servicekit.grpc import BasicAsyncClient</span>
-<span class="sd">    &gt;&gt;&gt; client = BasicAsyncClient(&quot;localhost:50051&quot;, MyServiceStub, request_compression_algo=&quot;gzip&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; client = BasicAsyncClient(&quot;grpc://localhost:50051&quot;, MyServiceStub, request_compression_algo=&quot;gzip&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; response = await client.send(MyRequest(field=&quot;value&quot;), Method=&quot;MyRpc&quot;, timeout=30)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
