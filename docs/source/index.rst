@@ -4,15 +4,9 @@ Welcome to redup.python.servicekit
 .. mdinclude:: ../../README.md
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Packages:
 
-   config
-   logging
-   health
-   metrics
-   monitoring
-   grpc
    redup_servicekit
 
 Indices and tables
