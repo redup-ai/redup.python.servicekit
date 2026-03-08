@@ -72,6 +72,9 @@ html_context = {
 #
 html_theme = 'sphinx_rtd_theme'
 
+# Do not copy source .rst into _sources/ (keeps gh-pages smaller)
+html_copy_source = False
+
 # Favicon: organization avatar from GitHub (optional size for small icon)
 html_favicon = 'https://github.com/redup-ai.png?size=32'
 
