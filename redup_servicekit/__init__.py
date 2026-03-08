@@ -9,9 +9,6 @@ The :mod:`redup_servicekit` package contains:
 - :mod:`redup_servicekit.monitoring` — MonitorServer, MetricServer, task stats
 - :mod:`redup_servicekit.grpc` — async client and server decorators
 """
-
-__docformat__ = 'restructuredtext'
-
 import sys
 
 if sys.version_info >= (3, 8):

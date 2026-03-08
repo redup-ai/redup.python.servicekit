@@ -7,8 +7,6 @@ The :mod:`redup_servicekit.metrics` module contains:
 - :data:`redup_servicekit.metrics.BUCKETS_HIST` — histogram bucket boundaries for time/size
 """
 
-__docformat__ = 'restructuredtext'
-
 
 class _MetricsRegistry(dict):
     _instance = None

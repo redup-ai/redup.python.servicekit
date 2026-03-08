@@ -9,9 +9,6 @@ The :mod:`redup_servicekit.monitoring` module contains:
 - :class:`redup_servicekit.monitoring.MetricServer` — HTTP server that serves /metrics
 - :class:`redup_servicekit.monitoring.MonitorServer` — singleton entry point; runs MetricServer, forwards to storage
 """
-
-__docformat__ = 'restructuredtext'
-
 import asyncio
 import copy
 import datetime

@@ -4,9 +4,6 @@ The :mod:`redup_servicekit.grpc.client` module contains:
 
 - :class:`redup_servicekit.grpc.client.BasicAsyncClient`
 """
-
-__docformat__ = 'restructuredtext'
-
 from typing import Tuple
 from urllib.parse import urlparse
 

@@ -5,9 +5,6 @@ The :mod:`redup_servicekit.health` module provides:
 - :data:`redup_servicekit.health.HEALTH_DESCRIPTOR` — health service descriptor
 - :func:`redup_servicekit.health._configure_health_server` — add health servicer to server
 """
-
-__docformat__ = 'restructuredtext'
-
 import threading
 from concurrent import futures
 
