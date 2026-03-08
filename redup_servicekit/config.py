@@ -4,6 +4,9 @@ The :mod:`redup_servicekit.config` module contains:
 
 - :class:`redup_servicekit.config.ConfigSingleton`
 """
+
+__docformat__ = 'restructuredtext'
+
 import logging
 import os
 from pathlib import Path

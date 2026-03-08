@@ -4,6 +4,9 @@ The :mod:`redup_servicekit.logging` module contains:
 
 - :func:`redup_servicekit.logging.init_console_log`
 """
+
+__docformat__ = 'restructuredtext'
+
 import logging
 
 from pythonjsonlogger import jsonlogger

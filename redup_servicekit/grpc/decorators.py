@@ -5,6 +5,9 @@ The :mod:`redup_servicekit.grpc.decorators` module contains:
 - :func:`redup_servicekit.grpc.decorators.grpc_init_wrapper` — wrap servicer init; register per-method stats
 - :func:`redup_servicekit.grpc.decorators.aio_grpc_method_wrapper` — wrap async handlers; record metrics and health
 """
+
+__docformat__ = 'restructuredtext'
+
 import logging
 import time
 import traceback
