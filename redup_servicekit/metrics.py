@@ -28,6 +28,7 @@ OPERATION_EXPAND_METRICS = {
 
 BUCKETS_HIST = {
     "time": [
+        0.0,
         0.01,
         0.02,
         0.03,
@@ -77,6 +78,7 @@ BUCKETS_HIST = {
         "INF",
     ],
     "size": [
+        0.0,
         1.0,
         5.0,
         10.0,
