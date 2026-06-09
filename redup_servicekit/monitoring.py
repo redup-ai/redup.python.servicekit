@@ -257,9 +257,18 @@ class MonitorStorage:
         combined_time_spend_metric_key = "stats_tasks_with_current_time_spend_total"
         current_val = self._gauge_get(PROMETHEUS_METRICS_REGISTRY["current_tasks_time_spend"])
         spent_val = self._gauge_get(PROMETHEUS_METRICS_REGISTRY["stats_tasks_time_spend"])
+        combined_time_spend = current_val + spent_val
         PROMETHEUS_METRICS_REGISTRY[combined_time_spend_metric_key].labels(
             *MonitorServer._get_labels()
-        ).set(current_val + spent_val)
+        ).set(combined_time_spend)
+        service_threads = self._gauge_get(
+            PROMETHEUS_METRICS_REGISTRY["service_threads"]
+        )
+        PROMETHEUS_METRICS_REGISTRY[
+            "stats_tasks_with_current_time_spend_normalised_total"
+        ].labels(*MonitorServer._get_labels()).set(
+            combined_time_spend / service_threads if service_threads else 0.0
+        )
 
     def _record_histogram_observation(
         self,
@@ -544,6 +553,16 @@ class MonitorServer:
         PROMETHEUS_METRICS_REGISTRY["stats_tasks_with_current_time_spend_total"].labels(
             *MonitorServer._get_labels()
         ).inc(0)
+        PROMETHEUS_METRICS_REGISTRY[
+            "stats_tasks_with_current_time_spend_normalised_total"
+        ] = Gauge(
+            "stats_tasks_with_current_time_spend_normalised_total",
+            "Total time spent on current and completed tasks per configured worker thread.",
+            MonitorServer._label_names(),
+        )
+        PROMETHEUS_METRICS_REGISTRY[
+            "stats_tasks_with_current_time_spend_normalised_total"
+        ].labels(*MonitorServer._get_labels()).inc(0)
         PROMETHEUS_METRICS_REGISTRY[
             "stats_tasks_time_spent_quantile"
         ] = Histogram(
