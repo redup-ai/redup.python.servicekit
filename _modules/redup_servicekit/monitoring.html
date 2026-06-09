@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>redup_servicekit.monitoring &mdash; redup.python.servicekit 1.0.5 documentation</title>
+  <title>redup_servicekit.monitoring &mdash; redup.python.servicekit 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8dafa222"></script>
+      <script src="../../_static/documentation_options.js?v=b3e8092d"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -383,9 +383,18 @@
         <span class="n">combined_time_spend_metric_key</span> <span class="o">=</span> <span class="s2">&quot;stats_tasks_with_current_time_spend_total&quot;</span>
         <span class="n">current_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauge_get</span><span class="p">(</span><span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;current_tasks_time_spend&quot;</span><span class="p">])</span>
         <span class="n">spent_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauge_get</span><span class="p">(</span><span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">])</span>
+        <span class="n">combined_time_spend</span> <span class="o">=</span> <span class="n">current_val</span> <span class="o">+</span> <span class="n">spent_val</span>
         <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="n">combined_time_spend_metric_key</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
             <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">current_val</span> <span class="o">+</span> <span class="n">spent_val</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">combined_time_spend</span><span class="p">)</span>
+        <span class="n">service_threads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gauge_get</span><span class="p">(</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;service_threads&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span>
+            <span class="s2">&quot;stats_tasks_with_current_time_spend_normalised_total&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+            <span class="n">combined_time_spend</span> <span class="o">/</span> <span class="n">service_threads</span> <span class="k">if</span> <span class="n">service_threads</span> <span class="k">else</span> <span class="mf">0.0</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_record_histogram_observation</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -724,6 +733,16 @@
         <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_with_current_time_spend_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
             <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
         <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span>
+            <span class="s2">&quot;stats_tasks_with_current_time_spend_normalised_total&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span>
+            <span class="s2">&quot;stats_tasks_with_current_time_spend_normalised_total&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Total time spent on current and completed tasks per configured worker thread.&quot;</span><span class="p">,</span>
+            <span class="n">MonitorServer</span><span class="o">.</span><span class="n">_label_names</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span>
+            <span class="s2">&quot;stats_tasks_with_current_time_spend_normalised_total&quot;</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">())</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span>
             <span class="s2">&quot;stats_tasks_time_spent_quantile&quot;</span>
         <span class="p">]</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span>
