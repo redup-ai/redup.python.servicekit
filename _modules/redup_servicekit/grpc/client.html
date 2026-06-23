@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>redup_servicekit.grpc.client &mdash; redup.python.servicekit 1.1.0 documentation</title>
+  <title>redup_servicekit.grpc.client &mdash; redup.python.servicekit 1.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=b3e8092d"></script>
+      <script src="../../../_static/documentation_options.js?v=84a24d03"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -98,7 +98,8 @@
 
 <span class="sd">- :class:`redup_servicekit.grpc.client.BasicAsyncClient`</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlparse</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">grpc</span>
@@ -117,6 +118,14 @@
 <span class="n">HTTP2_MAX_PINGS_WITHOUT_DATA</span> <span class="o">=</span> <span class="mi">0</span>
 
 
+<span class="k">class</span><span class="w"> </span><span class="nc">_AsyncNoop</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
 <div class="viewcode-block" id="BasicAsyncClient">
 <a class="viewcode-back" href="../../../grpc.html#redup_servicekit.grpc.BasicAsyncClient">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BasicAsyncClient</span><span class="p">:</span>
@@ -131,6 +140,7 @@
 <span class="sd">    :type request_compression_algo: str</span>
 <span class="sd">    :param response_compression_algo: Same options; sent as metadata.</span>
 <span class="sd">    :type response_compression_algo: str</span>
+<span class="sd">    :param max_concurrent_requests: Max parallel outgoing calls. Omitted or zero — no limit.</span>
 
 <span class="sd">    Example:</span>
 
@@ -167,6 +177,7 @@
         <span class="n">max_message_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_MAX_MESSAGE_LENGTH</span><span class="p">,</span>
         <span class="n">request_compression_algo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
         <span class="n">response_compression_algo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gzip&quot;</span><span class="p">,</span>
+        <span class="n">max_concurrent_requests</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_server_address</span> <span class="o">=</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stub_cls</span> <span class="o">=</span> <span class="n">ServiceStub</span>
@@ -175,7 +186,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_base_metadata</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;response-compression&quot;</span><span class="p">,</span> <span class="n">response_compression_algo</span><span class="p">),)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_channel_opts</span> <span class="o">=</span> <span class="n">BasicAsyncClient</span><span class="o">.</span><span class="n">_channel_options</span><span class="p">(</span><span class="n">max_message_length</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_endpoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_tls</span> <span class="o">=</span> <span class="n">BasicAsyncClient</span><span class="o">.</span><span class="n">_parse_endpoint_and_tls</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_open_channels</span> <span class="o">=</span> <span class="p">{}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open_channels</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_semaphore</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">max_concurrent_requests</span><span class="p">)</span> <span class="k">if</span> <span class="n">max_concurrent_requests</span> <span class="k">else</span> <span class="kc">None</span></div>
 
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">method_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
@@ -220,13 +232,14 @@
             <span class="n">compression_algorithm</span> <span class="o">=</span> <span class="n">COMPRESSION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_compression_in</span><span class="p">,</span> <span class="n">grpc</span><span class="o">.</span><span class="n">Compression</span><span class="o">.</span><span class="n">Gzip</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">stream</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_tls</span><span class="p">:</span>
-                <span class="k">async</span> <span class="k">with</span> <span class="n">grpc</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">secure_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_endpoint</span><span class="p">,</span> <span class="n">ssl_credentials</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">channel_options</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression_algorithm</span><span class="p">)</span> <span class="k">as</span> <span class="n">channel</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semaphore</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semaphore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_AsyncNoop</span><span class="p">():</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_tls</span><span class="p">:</span>
+                    <span class="k">async</span> <span class="k">with</span> <span class="n">grpc</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">secure_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_endpoint</span><span class="p">,</span> <span class="n">ssl_credentials</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">channel_options</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression_algorithm</span><span class="p">)</span> <span class="k">as</span> <span class="n">channel</span><span class="p">:</span>
+                        <span class="n">response_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">Method</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">request_metadata</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="k">await</span> <span class="n">response_generator</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">()</span>
+                <span class="k">async</span> <span class="k">with</span> <span class="n">grpc</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_endpoint</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">channel_options</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression_algorithm</span><span class="p">)</span> <span class="k">as</span> <span class="n">channel</span><span class="p">:</span>
                     <span class="n">response_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">Method</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">request_metadata</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
                     <span class="k">return</span> <span class="k">await</span> <span class="n">response_generator</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">()</span>
-            <span class="k">async</span> <span class="k">with</span> <span class="n">grpc</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_endpoint</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">channel_options</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression_algorithm</span><span class="p">)</span> <span class="k">as</span> <span class="n">channel</span><span class="p">:</span>
-                <span class="n">response_generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">Method</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">request_metadata</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-                <span class="k">return</span> <span class="k">await</span> <span class="n">response_generator</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_tls</span><span class="p">:</span>
             <span class="n">channel</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">secure_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_endpoint</span><span class="p">,</span> <span class="n">ssl_credentials</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">channel_options</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression_algorithm</span><span class="p">)</span>
@@ -236,11 +249,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_open_channels</span><span class="p">[</span><span class="n">channel_identifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel</span>
 
         <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">stream_response_generator</span><span class="p">():</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">response_message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">Method</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">request_metadata</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
-                    <span class="k">yield</span> <span class="n">response_message</span>
-            <span class="k">finally</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_open_channels</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">channel_identifier</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semaphore</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semaphore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_AsyncNoop</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">async</span> <span class="k">for</span> <span class="n">response_message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invoke</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">Method</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">request_metadata</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">response_message</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_open_channels</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">channel_identifier</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">stream_response_generator</span><span class="p">()</span></div>
 </div>

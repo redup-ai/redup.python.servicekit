@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gRPC utilities &mdash; redup.python.servicekit 1.1.0 documentation</title>
+  <title>gRPC utilities &mdash; redup.python.servicekit 1.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=b3e8092d"></script>
+      <script src="_static/documentation_options.js?v=84a24d03"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -105,7 +105,7 @@
 </ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BasicAsyncClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ServiceStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BasicAsyncClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ServiceStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_concurrent_requests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Async gRPC client with on-demand channels, TLS and compression.</p>
 <dl class="field-list simple">
@@ -116,6 +116,7 @@
 <li><p><strong>max_message_length</strong> (<em>int</em>) – Max send/receive message length in bytes. Default 100 MiB.</p></li>
 <li><p><strong>request_compression_algo</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">gzip</span></code>, <code class="docutils literal notranslate"><span class="pre">deflate</span></code>, or <code class="docutils literal notranslate"><span class="pre">no_compression</span></code>.</p></li>
 <li><p><strong>response_compression_algo</strong> (<em>str</em>) – Same options; sent as metadata.</p></li>
+<li><p><strong>max_concurrent_requests</strong> – Max parallel outgoing calls. Omitted or zero — no limit.</p></li>
 </ul>
 </dd>
 </dl>
@@ -127,7 +128,7 @@
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ServiceStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ServiceStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_concurrent_requests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
