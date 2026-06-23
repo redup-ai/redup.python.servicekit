@@ -4,7 +4,8 @@ The :mod:`redup_servicekit.grpc.client` module contains:
 
 - :class:`redup_servicekit.grpc.client.BasicAsyncClient`
 """
-from typing import Tuple
+import asyncio
+from typing import Optional, Tuple
 from urllib.parse import urlparse
 
 import grpc
@@ -23,6 +24,14 @@ KEEPALIVE_PERMIT_WITHOUT_CALLS = 1
 HTTP2_MAX_PINGS_WITHOUT_DATA = 0
 
 
+class _AsyncNoop:
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *exc):
+        return False
+
+
 class BasicAsyncClient:
     r"""Async gRPC client with on-demand channels, TLS and compression.
 
@@ -35,6 +44,7 @@ class BasicAsyncClient:
     :type request_compression_algo: str
     :param response_compression_algo: Same options; sent as metadata.
     :type response_compression_algo: str
+    :param max_concurrent_requests: Max parallel outgoing calls. Omitted or zero — no limit.
 
     Example:
 
@@ -69,6 +79,7 @@ class BasicAsyncClient:
         max_message_length: int = DEFAULT_MAX_MESSAGE_LENGTH,
         request_compression_algo: str = "gzip",
         response_compression_algo: str = "gzip",
+        max_concurrent_requests: Optional[int] = None,
     ):
         self._server_address = host
         self._stub_cls = ServiceStub
@@ -78,6 +89,7 @@ class BasicAsyncClient:
         self._channel_opts = BasicAsyncClient._channel_options(max_message_length)
         self._endpoint, self._use_tls = BasicAsyncClient._parse_endpoint_and_tls(host)
         self._open_channels = {}
+        self._semaphore = asyncio.Semaphore(max_concurrent_requests) if max_concurrent_requests else None
 
     async def _invoke(self, channel, method_name: str, request, metadata, timeout, stream: bool):
         stub = self._stub_cls(channel)
@@ -119,13 +131,14 @@ class BasicAsyncClient:
             compression_algorithm = COMPRESSION.get(self._compression_in, grpc.Compression.Gzip)
 
         if not stream:
-            if self._use_tls:
-                async with grpc.aio.secure_channel(self._endpoint, ssl_credentials, options=channel_options, compression=compression_algorithm) as channel:
+            async with self._semaphore if self._semaphore is not None else _AsyncNoop():
+                if self._use_tls:
+                    async with grpc.aio.secure_channel(self._endpoint, ssl_credentials, options=channel_options, compression=compression_algorithm) as channel:
+                        response_generator = self._invoke(channel, Method, request, request_metadata, timeout, False)
+                        return await response_generator.__anext__()
+                async with grpc.aio.insecure_channel(self._endpoint, options=channel_options, compression=compression_algorithm) as channel:
                     response_generator = self._invoke(channel, Method, request, request_metadata, timeout, False)
                     return await response_generator.__anext__()
-            async with grpc.aio.insecure_channel(self._endpoint, options=channel_options, compression=compression_algorithm) as channel:
-                response_generator = self._invoke(channel, Method, request, request_metadata, timeout, False)
-                return await response_generator.__anext__()
 
         if self._use_tls:
             channel = grpc.aio.secure_channel(self._endpoint, ssl_credentials, options=channel_options, compression=compression_algorithm)
@@ -135,10 +148,11 @@ class BasicAsyncClient:
         self._open_channels[channel_identifier] = channel
 
         async def stream_response_generator():
-            try:
-                async for response_message in self._invoke(channel, Method, request, request_metadata, timeout, True):
-                    yield response_message
-            finally:
-                self._open_channels.pop(channel_identifier, None)
+            async with self._semaphore if self._semaphore is not None else _AsyncNoop():
+                try:
+                    async for response_message in self._invoke(channel, Method, request, request_metadata, timeout, True):
+                        yield response_message
+                finally:
+                    self._open_channels.pop(channel_identifier, None)
 
         return stream_response_generator()
