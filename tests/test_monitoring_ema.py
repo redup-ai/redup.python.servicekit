@@ -12,8 +12,8 @@ async def test_stats_ema_replaces_rolling_history():
     storage = MonitorStorage()
     metric_key = "time full___method__foo"
 
-    await storage.append_stats("stats", {metric_key: 10.0})
-    await storage.append_stats("stats", {metric_key: 20.0})
+    await storage.append_stats({metric_key: 10.0})
+    await storage.append_stats({metric_key: 20.0})
 
     stats = await storage.get_stats()
     assert "stats" not in stats
@@ -33,7 +33,7 @@ async def test_metrics_snapshot_and_refresh():
     metric_key = "time full___method__foo"
 
     await storage.inc_stats("request___method__foo")
-    await storage.append_stats("stats", {metric_key: 1.5})
+    await storage.append_stats({metric_key: 1.5})
     with storage._lock:
         storage._stats["tasks"] = {"task-1": 1000.0}
 

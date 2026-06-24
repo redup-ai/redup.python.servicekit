@@ -303,6 +303,33 @@ class MonitorStorage:
             *MonitorServer._get_labels(histogram_label_values)
         ).observe(observed_value)
 
+    @staticmethod
+    def _histogram_observation_specs(stat_value):
+        if not isinstance(stat_value, dict):
+            return []
+        specs = []
+        for metric_key, metric_value in stat_value.items():
+            if ("time" in metric_key or "size" in metric_key) and isinstance(
+                metric_value, (int, float)
+            ):
+                specs.append(
+                    (
+                        metric_key,
+                        metric_value,
+                        "time" if "time" in metric_key else "size",
+                    )
+                )
+        return specs
+
+    def _observe_histogram_specs(self, specs):
+        for metric_key, metric_value, bucket_type in specs:
+            self._record_histogram_observation(
+                metric_key,
+                metric_value,
+                "stats_hist_",
+                bucket_type=bucket_type,
+            )
+
     async def inc_stats(self, stat_key, count=1):
         with self._lock:
             self._stats[stat_key] = self._stats.get(stat_key, 0) + count
@@ -326,73 +353,48 @@ class MonitorStorage:
             self._status_series[task_type] = (new_status, new_series)
             self._stats["series." + task_type] = (status.name, new_series)
 
-    async def append_stats(self, stat_key, stat_value, max_count=-1):
+    async def append_stats(self, stat_value):
+        histogram_specs = []
         with self._lock:
-            if stat_key == "stats" and isinstance(stat_value, dict):
-                ema_long = self._stats.setdefault("stats_ema_long", {})
-                ema_short = self._stats.setdefault("stats_ema_short", {})
-                for metric_key, metric_value in stat_value.items():
-                    self._update_ema(
-                        ema_long, metric_key, metric_value, _STATS_EMA_ALPHA_LONG
-                    )
-                    self._update_ema(
-                        ema_short, metric_key, metric_value, _STATS_EMA_ALPHA_SHORT
-                    )
-                    bucket_type = "time" if "time" in metric_key else "size"
-                    if "time" in metric_key or "size" in metric_key:
-                        self._record_histogram_observation(
-                            metric_key,
-                            metric_value,
-                            "stats_hist_",
-                            bucket_type=bucket_type,
-                        )
-                return
-            if stat_key not in self._stats:
-                self._stats[stat_key] = []
-            self._stats[stat_key].append(stat_value)
-            if max_count >= 0:
-                self._stats[stat_key] = self._stats[stat_key][-max_count:]
-            if isinstance(stat_value, dict):
-                for histogram_stat_key, histogram_observed_value in stat_value.items():
-                    bucket_type = "time" if "time" in histogram_stat_key else "size"
-                    if "time" in histogram_stat_key or "size" in histogram_stat_key:
-                        self._record_histogram_observation(
-                            histogram_stat_key,
-                            histogram_observed_value,
-                            "stats_hist_",
-                            bucket_type=bucket_type,
-                        )
-            elif ("time" in stat_key or "size" in stat_key) and isinstance(
-                stat_value, (int, float)
-            ):
-                self._record_histogram_observation(
-                    stat_key,
-                    stat_value,
-                    "stats_hist_",
-                    bucket_type="time" if "time" in stat_key else "size",
+            ema_long = self._stats.setdefault("stats_ema_long", {})
+            ema_short = self._stats.setdefault("stats_ema_short", {})
+            for metric_key, metric_value in stat_value.items():
+                self._update_ema(
+                    ema_long, metric_key, metric_value, _STATS_EMA_ALPHA_LONG
                 )
+                self._update_ema(
+                    ema_short, metric_key, metric_value, _STATS_EMA_ALPHA_SHORT
+                )
+            histogram_specs = self._histogram_observation_specs(stat_value)
+        self._observe_histogram_specs(histogram_specs)
 
     async def add_key_value(self, section_key, key_value_tuple):
+        inc_started = False
         with self._lock:
             if section_key not in self._stats:
                 self._stats[section_key] = {}
             if section_key == "tasks":
-                PROMETHEUS_METRICS_REGISTRY["started_total"].labels(
-                    *MonitorServer._get_labels()
-                ).inc()
+                inc_started = True
             self._stats[section_key][key_value_tuple[0]] = key_value_tuple[1]
+        if inc_started:
+            PROMETHEUS_METRICS_REGISTRY["started_total"].labels(
+                *MonitorServer._get_labels()
+            ).inc()
 
     async def del_key_value(self, section_key, key_to_remove):
+        task_duration = None
         with self._lock:
             if section_key in self._stats and key_to_remove in self._stats[section_key]:
                 if section_key == "tasks":
-                    PROMETHEUS_METRICS_REGISTRY["stats_tasks_time_spend"].labels(
-                        *MonitorServer._get_labels()
-                    ).inc(time.time() - self._stats["tasks"][key_to_remove])
-                    PROMETHEUS_METRICS_REGISTRY["completed_total"].labels(
-                        *MonitorServer._get_labels()
-                    ).inc()
+                    task_duration = time.time() - self._stats["tasks"][key_to_remove]
                 del self._stats[section_key][key_to_remove]
+        if task_duration is not None:
+            PROMETHEUS_METRICS_REGISTRY["stats_tasks_time_spend"].labels(
+                *MonitorServer._get_labels()
+            ).inc(task_duration)
+            PROMETHEUS_METRICS_REGISTRY["completed_total"].labels(
+                *MonitorServer._get_labels()
+            ).inc()
 
     async def get_stats(self):
         with self._lock:
@@ -505,9 +507,9 @@ class MonitorServer:
     async def wait_for_ending_tasks(self):
         """Wait until no tasks are in progress. Use: await server.wait_for_ending_tasks()."""
         while True:
-            stats = await self.get_stats()
-            if not stats.get("tasks"):
-                return 0
+            with self._storage._lock:
+                if not self._storage._stats.get("tasks"):
+                    return 0
             await asyncio.sleep(1)
 
     def __init__(self):
@@ -606,9 +608,6 @@ class MonitorServer:
         MonitorServer.async_service_threads = defaultdict(
             lambda: asyncio.Semaphore(max_workers)
         )
-        MonitorServer.service_threads = defaultdict(
-            lambda: threading.Semaphore(max_workers)
-        )
         MonitorServer.service_info = dict(
             server_config.get("service info", {}))
         MonitorServer.service_info["service_threads"] = {
@@ -646,9 +645,9 @@ class MonitorServer:
         else:
             logging.warning("The monitor server is not initialized.")
 
-    async def append_stats(self, stat_key, stat_value, max_count=-1):
+    async def append_stats(self, stat_value):
         if self._storage:
-            await self._storage.append_stats(stat_key, stat_value, max_count=max_count)
+            await self._storage.append_stats(stat_value)
         else:
             logging.warning("The monitor server is not initialized.")
 

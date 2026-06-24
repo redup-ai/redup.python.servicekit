@@ -55,8 +55,6 @@ def grpc_init_wrapper(func):
                     server.set_stat_sync(
                         "errors___method__%s___type__%s" % (name, error_kind), 0
                     )
-                server.set_stat_sync("request_size___method__%s" % name, 0)
-                server.set_stat_sync("response_size___method__%s" % name, 0)
         func(*args, **kwargs)
 
     return init_and_run
@@ -137,7 +135,7 @@ def aio_grpc_method_wrapper(func):
                 request_counters["time_remaining_after_time___method__%s" % rpc_method_name] = grpc_servicer_context.time_remaining()
             if server:
                 await server.inc_stats("processed___method__%s___status__%s" % (rpc_method_name, StatusParser.parse(request_failed)))
-                await server.append_stats("stats", request_counters)
+                await server.append_stats(request_counters)
             await ErrorParser.set_status(error_status_for_health)
 
     return run_with_metrics
