@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>redup_servicekit.monitoring &mdash; redup.python.servicekit 1.2.4 documentation</title>
+  <title>redup_servicekit.monitoring &mdash; redup.python.servicekit 1.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=ccec0a52"></script>
+      <script src="../../_static/documentation_options.js?v=96647119"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -429,6 +429,33 @@
             <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">histogram_label_values</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">observed_value</span><span class="p">)</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_histogram_observation_specs</span><span class="p">(</span><span class="n">stat_value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stat_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">specs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span> <span class="ow">in</span> <span class="n">stat_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">metric_key</span> <span class="ow">or</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">metric_key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">metric_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">specs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="n">metric_key</span><span class="p">,</span>
+                        <span class="n">metric_value</span><span class="p">,</span>
+                        <span class="s2">&quot;time&quot;</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">metric_key</span> <span class="k">else</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">specs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_observe_histogram_specs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">specs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">,</span> <span class="n">bucket_type</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_record_histogram_observation</span><span class="p">(</span>
+                <span class="n">metric_key</span><span class="p">,</span>
+                <span class="n">metric_value</span><span class="p">,</span>
+                <span class="s2">&quot;stats_hist_&quot;</span><span class="p">,</span>
+                <span class="n">bucket_type</span><span class="o">=</span><span class="n">bucket_type</span><span class="p">,</span>
+            <span class="p">)</span>
+
 <div class="viewcode-block" id="MonitorStorage.inc_stats">
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage.inc_stats">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">inc_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -463,79 +490,54 @@
 
 <div class="viewcode-block" id="MonitorStorage.append_stats">
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage.append_stats">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">append_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">,</span> <span class="n">max_count</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">append_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">):</span>
+        <span class="n">histogram_specs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">stat_key</span> <span class="o">==</span> <span class="s2">&quot;stats&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stat_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">ema_long</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;stats_ema_long&quot;</span><span class="p">,</span> <span class="p">{})</span>
-                <span class="n">ema_short</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;stats_ema_short&quot;</span><span class="p">,</span> <span class="p">{})</span>
-                <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span> <span class="ow">in</span> <span class="n">stat_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_update_ema</span><span class="p">(</span>
-                        <span class="n">ema_long</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">,</span> <span class="n">_STATS_EMA_ALPHA_LONG</span>
-                    <span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_update_ema</span><span class="p">(</span>
-                        <span class="n">ema_short</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">,</span> <span class="n">_STATS_EMA_ALPHA_SHORT</span>
-                    <span class="p">)</span>
-                    <span class="n">bucket_type</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">metric_key</span> <span class="k">else</span> <span class="s2">&quot;size&quot;</span>
-                    <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">metric_key</span> <span class="ow">or</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">metric_key</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_record_histogram_observation</span><span class="p">(</span>
-                            <span class="n">metric_key</span><span class="p">,</span>
-                            <span class="n">metric_value</span><span class="p">,</span>
-                            <span class="s2">&quot;stats_hist_&quot;</span><span class="p">,</span>
-                            <span class="n">bucket_type</span><span class="o">=</span><span class="n">bucket_type</span><span class="p">,</span>
-                        <span class="p">)</span>
-                <span class="k">return</span>
-            <span class="k">if</span> <span class="n">stat_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stat_value</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">max_count</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">stat_key</span><span class="p">][</span><span class="o">-</span><span class="n">max_count</span><span class="p">:]</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stat_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">histogram_stat_key</span><span class="p">,</span> <span class="n">histogram_observed_value</span> <span class="ow">in</span> <span class="n">stat_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">bucket_type</span> <span class="o">=</span> <span class="s2">&quot;time&quot;</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">histogram_stat_key</span> <span class="k">else</span> <span class="s2">&quot;size&quot;</span>
-                    <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">histogram_stat_key</span> <span class="ow">or</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">histogram_stat_key</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_record_histogram_observation</span><span class="p">(</span>
-                            <span class="n">histogram_stat_key</span><span class="p">,</span>
-                            <span class="n">histogram_observed_value</span><span class="p">,</span>
-                            <span class="s2">&quot;stats_hist_&quot;</span><span class="p">,</span>
-                            <span class="n">bucket_type</span><span class="o">=</span><span class="n">bucket_type</span><span class="p">,</span>
-                        <span class="p">)</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">stat_key</span> <span class="ow">or</span> <span class="s2">&quot;size&quot;</span> <span class="ow">in</span> <span class="n">stat_key</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                <span class="n">stat_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
-            <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_record_histogram_observation</span><span class="p">(</span>
-                    <span class="n">stat_key</span><span class="p">,</span>
-                    <span class="n">stat_value</span><span class="p">,</span>
-                    <span class="s2">&quot;stats_hist_&quot;</span><span class="p">,</span>
-                    <span class="n">bucket_type</span><span class="o">=</span><span class="s2">&quot;time&quot;</span> <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">stat_key</span> <span class="k">else</span> <span class="s2">&quot;size&quot;</span><span class="p">,</span>
-                <span class="p">)</span></div>
+            <span class="n">ema_long</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;stats_ema_long&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">ema_short</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;stats_ema_short&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span> <span class="ow">in</span> <span class="n">stat_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_ema</span><span class="p">(</span>
+                    <span class="n">ema_long</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">,</span> <span class="n">_STATS_EMA_ALPHA_LONG</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_ema</span><span class="p">(</span>
+                    <span class="n">ema_short</span><span class="p">,</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_value</span><span class="p">,</span> <span class="n">_STATS_EMA_ALPHA_SHORT</span>
+                <span class="p">)</span>
+            <span class="n">histogram_specs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_histogram_observation_specs</span><span class="p">(</span><span class="n">stat_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_observe_histogram_specs</span><span class="p">(</span><span class="n">histogram_specs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MonitorStorage.add_key_value">
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage.add_key_value">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">add_key_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_key</span><span class="p">,</span> <span class="n">key_value_tuple</span><span class="p">):</span>
+        <span class="n">inc_started</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">section_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="n">section_key</span> <span class="o">==</span> <span class="s2">&quot;tasks&quot;</span><span class="p">:</span>
-                <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;started_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
-                    <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
-                <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">][</span><span class="n">key_value_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">key_value_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+                <span class="n">inc_started</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">][</span><span class="n">key_value_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">key_value_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">inc_started</span><span class="p">:</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;started_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="MonitorStorage.del_key_value">
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage.del_key_value">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">del_key_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section_key</span><span class="p">,</span> <span class="n">key_to_remove</span><span class="p">):</span>
+        <span class="n">task_duration</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">section_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="ow">and</span> <span class="n">key_to_remove</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">section_key</span> <span class="o">==</span> <span class="s2">&quot;tasks&quot;</span><span class="p">:</span>
-                    <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
-                        <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
-                    <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;tasks&quot;</span><span class="p">][</span><span class="n">key_to_remove</span><span class="p">])</span>
-                    <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;completed_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
-                        <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
-                    <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">][</span><span class="n">key_to_remove</span><span class="p">]</span></div>
+                    <span class="n">task_duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="s2">&quot;tasks&quot;</span><span class="p">][</span><span class="n">key_to_remove</span><span class="p">]</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">[</span><span class="n">section_key</span><span class="p">][</span><span class="n">key_to_remove</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">task_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;stats_tasks_time_spend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="n">task_duration</span><span class="p">)</span>
+            <span class="n">PROMETHEUS_METRICS_REGISTRY</span><span class="p">[</span><span class="s2">&quot;completed_total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="MonitorStorage.get_stats">
@@ -678,9 +680,9 @@
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">wait_for_ending_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wait until no tasks are in progress. Use: await server.wait_for_ending_tasks().&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">stats</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="mi">0</span>
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
 
 
@@ -788,9 +790,6 @@
         <span class="n">MonitorServer</span><span class="o">.</span><span class="n">async_service_threads</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">max_workers</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_threads</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
-            <span class="k">lambda</span><span class="p">:</span> <span class="n">threading</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">max_workers</span><span class="p">)</span>
-        <span class="p">)</span>
         <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">server_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;service info&quot;</span><span class="p">,</span> <span class="p">{}))</span>
         <span class="n">MonitorServer</span><span class="o">.</span><span class="n">service_info</span><span class="p">[</span><span class="s2">&quot;service_threads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
@@ -837,9 +836,9 @@
 
 <div class="viewcode-block" id="MonitorServer.append_stats">
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorServer.append_stats">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">append_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">,</span> <span class="n">max_count</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">append_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="p">:</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">append_stats</span><span class="p">(</span><span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">,</span> <span class="n">max_count</span><span class="o">=</span><span class="n">max_count</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storage</span><span class="o">.</span><span class="n">append_stats</span><span class="p">(</span><span class="n">stat_value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;The monitor server is not initialized.&quot;</span><span class="p">)</span></div>
 
