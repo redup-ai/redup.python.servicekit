@@ -104,7 +104,6 @@
 <span class="sd">- :class:`redup_servicekit.monitoring.MonitorServer` — singleton entry point; runs MetricServer, forwards to storage</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
@@ -258,12 +257,25 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_time</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_snapshot_stats_for_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;stats_ema_long&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stats_ema_long&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span>
+                <span class="s2">&quot;stats_ema_short&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stats_ema_short&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span>
+                <span class="s2">&quot;counters&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">(</span><span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stat_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+                <span class="p">],</span>
+                <span class="s2">&quot;task_start_times&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="p">}</span>
+
 <div class="viewcode-block" id="MonitorStorage.refresh_registry_for_metrics">
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage.refresh_registry_for_metrics">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">refresh_registry_for_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update PROMETHEUS_METRICS_REGISTRY from current stats. Call from MetricServer on /metrics request (e.g. every 30s).&quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="n">snapshot</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">)</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_snapshot_stats_for_metrics</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_registry_from_stats</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span></div>
 
 
@@ -335,34 +347,20 @@
             <span class="o">*</span><span class="n">MonitorServer</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">prometheus_label_values</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">numeric_value</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_refresh_registry_from_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_stats</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span> <span class="ow">in</span> <span class="n">all_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s2">&quot;stats_ema_long&quot;</span><span class="p">,</span> <span class="p">{}</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_refresh_registry_from_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span> <span class="ow">in</span> <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;stats_ema_long&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aggregation_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_prom_set_value</span><span class="p">(</span><span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span><span class="p">,</span> <span class="s2">&quot;stats_aggregation_&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span> <span class="ow">in</span> <span class="n">all_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s2">&quot;stats_ema_short&quot;</span><span class="p">,</span> <span class="p">{}</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span> <span class="ow">in</span> <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;stats_ema_short&quot;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aggregation_value</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_prom_set_value</span><span class="p">(</span>
                     <span class="n">aggregation_key</span><span class="p">,</span> <span class="n">aggregation_value</span><span class="p">,</span> <span class="s2">&quot;stats_aggregation_last_&quot;</span>
                 <span class="p">)</span>
-        <span class="k">for</span> <span class="n">top_level_stat_key</span> <span class="ow">in</span> <span class="n">all_stats</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">top_level_stat_key</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="s2">&quot;tasks&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;stats&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;stats_ema_long&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;stats_ema_short&quot;</span><span class="p">,</span>
-            <span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">all_stats</span><span class="p">[</span><span class="n">top_level_stat_key</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_prom_set_value</span><span class="p">(</span>
-                    <span class="n">top_level_stat_key</span><span class="p">,</span> <span class="n">all_stats</span><span class="p">[</span><span class="n">top_level_stat_key</span><span class="p">],</span> <span class="s2">&quot;stats_&quot;</span>
-                <span class="p">)</span>
-        <span class="n">task_id_to_start_timestamp</span> <span class="o">=</span> <span class="n">all_stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span> <span class="ow">in</span> <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;counters&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prom_set_value</span><span class="p">(</span><span class="n">stat_key</span><span class="p">,</span> <span class="n">stat_value</span><span class="p">,</span> <span class="s2">&quot;stats_&quot;</span><span class="p">)</span>
+        <span class="n">task_start_times</span> <span class="o">=</span> <span class="n">snapshot</span><span class="p">[</span><span class="s2">&quot;task_start_times&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_apply_operations</span><span class="p">(</span>
-            <span class="n">task_id_to_start_timestamp</span><span class="p">,</span>
+            <span class="n">task_start_times</span><span class="p">,</span>
             <span class="p">[</span><span class="s2">&quot;len&quot;</span><span class="p">],</span>
             <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;tasks&quot;</span><span class="p">,</span>
             <span class="n">postfix</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
@@ -371,8 +369,8 @@
         <span class="n">current_timestamp_seconds</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_apply_operations</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="p">(</span><span class="n">current_timestamp_seconds</span> <span class="o">-</span> <span class="n">task_id_to_start_timestamp</span><span class="p">[</span><span class="n">task_id</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">task_id</span> <span class="ow">in</span> <span class="n">task_id_to_start_timestamp</span>
+                <span class="n">current_timestamp_seconds</span> <span class="o">-</span> <span class="n">start_time</span>
+                <span class="k">for</span> <span class="n">start_time</span> <span class="ow">in</span> <span class="n">task_start_times</span>
             <span class="p">],</span>
             <span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">],</span>
             <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;current_tasks&quot;</span><span class="p">,</span>
@@ -544,14 +542,14 @@
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_stats">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stats</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MonitorStorage.get_statuses">
 <a class="viewcode-back" href="../../monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_statuses">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_statuses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_status_series</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_status_series</span><span class="p">)</span></div>
 </div>
 
 
