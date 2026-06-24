@@ -10,13 +10,22 @@ import time
 import traceback
 import uuid
 from functools import wraps
-from pickle import dumps
 
 import grpc
 from grpc.aio import AbortError
 
 from ..metrics import PROMETHEUS_METRICS_REGISTRY
 from ..monitoring import ErrorParser, MonitorServer, StatusParser
+
+
+def _payload_byte_size(message) -> int:
+    if message is None:
+        return 0
+    if callable(getattr(message, "ByteSize", None)):
+        return message.ByteSize()
+    if callable(getattr(message, "SerializeToString", None)):
+        return len(message.SerializeToString())
+    return 0
 
 
 def grpc_init_wrapper(func):
@@ -76,7 +85,7 @@ def aio_grpc_method_wrapper(func):
             await server.add_key_value("tasks", (request_trace_id, request_start_timestamp_seconds))
 
         kwargs["info"] = {"context": args[2]}
-        request_counters = {"request_size___method__%s" % rpc_method_name: len(dumps(args[1]))}
+        request_counters = {"request_size___method__%s" % rpc_method_name: _payload_byte_size(args[1])}
         grpc_servicer_context = args[2]
         if grpc_servicer_context is not None and "FakeContext" not in str(type(grpc_servicer_context)) and getattr(grpc_servicer_context, "time_remaining", lambda: None)() is not None:
             deadline_remaining_seconds = grpc_servicer_context.time_remaining()
@@ -93,7 +102,7 @@ def aio_grpc_method_wrapper(func):
             with PROMETHEUS_METRICS_REGISTRY["stats_tasks_time_spent_quantile"].labels(*MonitorServer._get_labels()).time():
                 async with MonitorServer.async_service_threads[rpc_method_name]:
                     handler_result = await func(*args, **kwargs)
-            request_counters["response_size___method__%s" % rpc_method_name] = len(dumps(handler_result))
+            request_counters["response_size___method__%s" % rpc_method_name] = _payload_byte_size(handler_result)
             return handler_result
         except AbortError:
             request_failed = True

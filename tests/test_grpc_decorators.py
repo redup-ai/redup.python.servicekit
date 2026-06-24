@@ -6,7 +6,7 @@ import grpc
 import pytest
 from grpc.aio import AbortError
 
-from redup_servicekit.grpc.decorators import aio_grpc_method_wrapper
+from redup_servicekit.grpc.decorators import _payload_byte_size, aio_grpc_method_wrapper
 from redup_servicekit.metrics import PROMETHEUS_METRICS_REGISTRY
 from redup_servicekit.monitoring import MonitorServer
 
@@ -138,3 +138,15 @@ async def test_handler_abort_is_not_wrapped_again(decorator_env):
         await _call_wrapped(handler, {"x": 1}, context)
 
     assert context.abort_calls == [(grpc.StatusCode.NOT_FOUND, "missing")]
+
+
+def test_payload_byte_size_uses_protobuf_byte_size():
+    class _ProtoLike:
+        def ByteSize(self):
+            return 123
+
+        def SerializeToString(self):
+            return b"x" * 999
+
+    assert _payload_byte_size(_ProtoLike()) == 123
+    assert _payload_byte_size({"x": 1}) == 0
