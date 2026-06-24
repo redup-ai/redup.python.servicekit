@@ -12,6 +12,9 @@ import uuid
 from functools import wraps
 from pickle import dumps
 
+import grpc
+from grpc.aio import AbortError
+
 from ..metrics import PROMETHEUS_METRICS_REGISTRY
 from ..monitoring import ErrorParser, MonitorServer, StatusParser
 
@@ -92,12 +95,28 @@ def aio_grpc_method_wrapper(func):
                     handler_result = await func(*args, **kwargs)
             request_counters["response_size___method__%s" % rpc_method_name] = len(dumps(handler_result))
             return handler_result
+        except AbortError:
+            request_failed = True
+            raise
         except Exception as caught_exception:
             logging.error(traceback.format_exc())
             request_failed = True
             error_status_for_health = ErrorParser.parse(caught_exception)
             if server:
                 await server.inc_stats("errors___method__%s___type__%s" % (rpc_method_name, error_status_for_health))
+            if grpc_servicer_context is not None and "FakeContext" not in str(type(grpc_servicer_context)):
+                if isinstance(caught_exception, grpc.aio.AioRpcError):
+                    status_code = caught_exception.code()
+                    status_details = caught_exception.details() or ""
+                    if status_code == grpc.StatusCode.INTERNAL:
+                        status_code = grpc.StatusCode.UNAVAILABLE
+                elif isinstance(caught_exception, (ValueError, TypeError)):
+                    status_code = grpc.StatusCode.INVALID_ARGUMENT
+                    status_details = str(caught_exception)
+                else:
+                    status_code = grpc.StatusCode.INTERNAL
+                    status_details = str(caught_exception) or type(caught_exception).__name__
+                await grpc_servicer_context.abort(status_code, status_details)
             raise
         finally:
             if server:
