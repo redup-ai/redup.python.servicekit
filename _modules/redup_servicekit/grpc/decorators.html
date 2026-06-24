@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>redup_servicekit.grpc.decorators &mdash; redup.python.servicekit 1.2.0 documentation</title>
+  <title>redup_servicekit.grpc.decorators &mdash; redup.python.servicekit 1.2.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=84a24d03"></script>
+      <script src="../../../_static/documentation_options.js?v=e06d9d47"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -106,6 +106,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pickle</span><span class="w"> </span><span class="kn">import</span> <span class="n">dumps</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">grpc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">grpc.aio</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbortError</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">..metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROMETHEUS_METRICS_REGISTRY</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">..monitoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">ErrorParser</span><span class="p">,</span> <span class="n">MonitorServer</span><span class="p">,</span> <span class="n">StatusParser</span>
 
@@ -191,12 +194,28 @@
                     <span class="n">handler_result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">request_counters</span><span class="p">[</span><span class="s2">&quot;response_size___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">handler_result</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">handler_result</span>
+        <span class="k">except</span> <span class="n">AbortError</span><span class="p">:</span>
+            <span class="n">request_failed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">raise</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">caught_exception</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
             <span class="n">request_failed</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">error_status_for_health</span> <span class="o">=</span> <span class="n">ErrorParser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">caught_exception</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
                 <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">inc_stats</span><span class="p">(</span><span class="s2">&quot;errors___method__</span><span class="si">%s</span><span class="s2">___type__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rpc_method_name</span><span class="p">,</span> <span class="n">error_status_for_health</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">grpc_servicer_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;FakeContext&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">grpc_servicer_context</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">caught_exception</span><span class="p">,</span> <span class="n">grpc</span><span class="o">.</span><span class="n">aio</span><span class="o">.</span><span class="n">AioRpcError</span><span class="p">):</span>
+                    <span class="n">status_code</span> <span class="o">=</span> <span class="n">caught_exception</span><span class="o">.</span><span class="n">code</span><span class="p">()</span>
+                    <span class="n">status_details</span> <span class="o">=</span> <span class="n">caught_exception</span><span class="o">.</span><span class="n">details</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+                    <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INTERNAL</span><span class="p">:</span>
+                        <span class="n">status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">caught_exception</span><span class="p">,</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)):</span>
+                    <span class="n">status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INVALID_ARGUMENT</span>
+                    <span class="n">status_details</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">caught_exception</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">status_code</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">INTERNAL</span>
+                    <span class="n">status_details</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">caught_exception</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">caught_exception</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="k">await</span> <span class="n">grpc_servicer_context</span><span class="o">.</span><span class="n">abort</span><span class="p">(</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status_details</span><span class="p">)</span>
             <span class="k">raise</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
