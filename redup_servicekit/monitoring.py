@@ -36,6 +36,10 @@ from .metrics import (
     PROMETHEUS_METRICS_REGISTRY,
 )
 
+# EMA spans matching the former rolling windows (100 and 5 samples).
+_STATS_EMA_ALPHA_LONG = 2.0 / 101.0
+_STATS_EMA_ALPHA_SHORT = 2.0 / 6.0
+
 
 class TaskStatus(Enum):
     r"""Status of a task for health reporting.
@@ -138,25 +142,15 @@ class MonitorStorage:
         self._refresh_registry_from_stats(snapshot)
 
     @staticmethod
-    def _get_aggregate_stats(all_stats, show_tasks=True, last_count=-1):
-        aggregated_by_key = (
-            {"tasks": [len(all_stats.get("tasks", {}))]} if show_tasks else {}
-        )
-        stats_series = all_stats.get("stats", [])
-        if last_count > 0:
-            stats_series = stats_series[-last_count:]
-        for stats_point in stats_series:
-            for stat_key in stats_point:
-                aggregated_by_key.setdefault(stat_key, []).append(stats_point[stat_key])
-        for aggregation_key in aggregated_by_key:
-            try:
-                aggregated_by_key[aggregation_key] = (
-                    sum(aggregated_by_key[aggregation_key]) * 1.0
-                    / len(aggregated_by_key[aggregation_key])
-                )
-            except Exception:
-                aggregated_by_key[aggregation_key] = 0.0
-        return aggregated_by_key
+    def _update_ema(ema_store, metric_key, value, alpha):
+        if not isinstance(value, (int, float)):
+            return
+        numeric_value = float(value)
+        previous = ema_store.get(metric_key)
+        if previous is None:
+            ema_store[metric_key] = numeric_value
+        else:
+            ema_store[metric_key] = alpha * numeric_value + (1.0 - alpha) * previous
 
     def _apply_operations(
         self,
@@ -216,20 +210,25 @@ class MonitorStorage:
         ).set(numeric_value)
 
     def _refresh_registry_from_stats(self, all_stats):
-        for aggregation_key, aggregation_value in list(
-            self._get_aggregate_stats(all_stats, False).items()
-        ):
+        for aggregation_key, aggregation_value in all_stats.get(
+            "stats_ema_long", {}
+        ).items():
             if isinstance(aggregation_value, (float, int)):
                 self._prom_set_value(aggregation_key, aggregation_value, "stats_aggregation_")
-        for aggregation_key, aggregation_value in list(
-            self._get_aggregate_stats(all_stats, False, 5).items()
-        ):
+        for aggregation_key, aggregation_value in all_stats.get(
+            "stats_ema_short", {}
+        ).items():
             if isinstance(aggregation_value, (float, int)):
                 self._prom_set_value(
                     aggregation_key, aggregation_value, "stats_aggregation_last_"
                 )
         for top_level_stat_key in all_stats:
-            if top_level_stat_key in ("tasks", "stats"):
+            if top_level_stat_key in (
+                "tasks",
+                "stats",
+                "stats_ema_long",
+                "stats_ema_short",
+            ):
                 continue
             if isinstance(all_stats[top_level_stat_key], (int, float)):
                 self._prom_set_value(
@@ -331,6 +330,25 @@ class MonitorStorage:
 
     async def append_stats(self, stat_key, stat_value, max_count=-1):
         with self._lock:
+            if stat_key == "stats" and isinstance(stat_value, dict):
+                ema_long = self._stats.setdefault("stats_ema_long", {})
+                ema_short = self._stats.setdefault("stats_ema_short", {})
+                for metric_key, metric_value in stat_value.items():
+                    self._update_ema(
+                        ema_long, metric_key, metric_value, _STATS_EMA_ALPHA_LONG
+                    )
+                    self._update_ema(
+                        ema_short, metric_key, metric_value, _STATS_EMA_ALPHA_SHORT
+                    )
+                    bucket_type = "time" if "time" in metric_key else "size"
+                    if "time" in metric_key or "size" in metric_key:
+                        self._record_histogram_observation(
+                            metric_key,
+                            metric_value,
+                            "stats_hist_",
+                            bucket_type=bucket_type,
+                        )
+                return
             if stat_key not in self._stats:
                 self._stats[stat_key] = []
             self._stats[stat_key].append(stat_value)

@@ -137,7 +137,7 @@ def aio_grpc_method_wrapper(func):
                 request_counters["time_remaining_after_time___method__%s" % rpc_method_name] = grpc_servicer_context.time_remaining()
             if server:
                 await server.inc_stats("processed___method__%s___status__%s" % (rpc_method_name, StatusParser.parse(request_failed)))
-                await server.append_stats("stats", request_counters, 100)
+                await server.append_stats("stats", request_counters)
             await ErrorParser.set_status(error_status_for_health)
 
     return run_with_metrics
