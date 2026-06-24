@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>redup_servicekit.grpc.decorators &mdash; redup.python.servicekit 1.2.3 documentation</title>
+  <title>redup_servicekit.grpc.decorators &mdash; redup.python.servicekit 1.2.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=29f23dcf"></script>
+      <script src="../../../_static/documentation_options.js?v=ccec0a52"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -236,7 +236,7 @@
                 <span class="n">request_counters</span><span class="p">[</span><span class="s2">&quot;time_remaining_after_time___method__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rpc_method_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc_servicer_context</span><span class="o">.</span><span class="n">time_remaining</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
                 <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">inc_stats</span><span class="p">(</span><span class="s2">&quot;processed___method__</span><span class="si">%s</span><span class="s2">___status__</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rpc_method_name</span><span class="p">,</span> <span class="n">StatusParser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">request_failed</span><span class="p">)))</span>
-                <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">append_stats</span><span class="p">(</span><span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="n">request_counters</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+                <span class="k">await</span> <span class="n">server</span><span class="o">.</span><span class="n">append_stats</span><span class="p">(</span><span class="s2">&quot;stats&quot;</span><span class="p">,</span> <span class="n">request_counters</span><span class="p">)</span>
             <span class="k">await</span> <span class="n">ErrorParser</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="n">error_status_for_health</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">run_with_metrics</span></div>
