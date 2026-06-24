@@ -10,7 +10,6 @@ The :mod:`redup_servicekit.monitoring` module contains:
 - :class:`redup_servicekit.monitoring.MonitorServer` — singleton entry point; runs MetricServer, forwards to storage
 """
 import asyncio
-import copy
 import datetime
 import logging
 import socket
@@ -135,10 +134,23 @@ class MonitorStorage:
     def get_time(self):
         return self._init_time
 
+    def _snapshot_stats_for_metrics(self):
+        with self._lock:
+            stats = self._stats
+            return {
+                "stats_ema_long": list(stats.get("stats_ema_long", {}).items()),
+                "stats_ema_short": list(stats.get("stats_ema_short", {}).items()),
+                "counters": [
+                    (stat_key, stat_value)
+                    for stat_key, stat_value in stats.items()
+                    if isinstance(stat_value, (int, float))
+                ],
+                "task_start_times": list(stats.get("tasks", {}).values()),
+            }
+
     def refresh_registry_for_metrics(self):
         """Update PROMETHEUS_METRICS_REGISTRY from current stats. Call from MetricServer on /metrics request (e.g. every 30s)."""
-        with self._lock:
-            snapshot = copy.deepcopy(self._stats)
+        snapshot = self._snapshot_stats_for_metrics()
         self._refresh_registry_from_stats(snapshot)
 
     @staticmethod
@@ -209,34 +221,20 @@ class MonitorStorage:
             *MonitorServer._get_labels(prometheus_label_values)
         ).set(numeric_value)
 
-    def _refresh_registry_from_stats(self, all_stats):
-        for aggregation_key, aggregation_value in all_stats.get(
-            "stats_ema_long", {}
-        ).items():
+    def _refresh_registry_from_stats(self, snapshot):
+        for aggregation_key, aggregation_value in snapshot["stats_ema_long"]:
             if isinstance(aggregation_value, (float, int)):
                 self._prom_set_value(aggregation_key, aggregation_value, "stats_aggregation_")
-        for aggregation_key, aggregation_value in all_stats.get(
-            "stats_ema_short", {}
-        ).items():
+        for aggregation_key, aggregation_value in snapshot["stats_ema_short"]:
             if isinstance(aggregation_value, (float, int)):
                 self._prom_set_value(
                     aggregation_key, aggregation_value, "stats_aggregation_last_"
                 )
-        for top_level_stat_key in all_stats:
-            if top_level_stat_key in (
-                "tasks",
-                "stats",
-                "stats_ema_long",
-                "stats_ema_short",
-            ):
-                continue
-            if isinstance(all_stats[top_level_stat_key], (int, float)):
-                self._prom_set_value(
-                    top_level_stat_key, all_stats[top_level_stat_key], "stats_"
-                )
-        task_id_to_start_timestamp = all_stats.get("tasks", [])
+        for stat_key, stat_value in snapshot["counters"]:
+            self._prom_set_value(stat_key, stat_value, "stats_")
+        task_start_times = snapshot["task_start_times"]
         self._apply_operations(
-            task_id_to_start_timestamp,
+            task_start_times,
             ["len"],
             prefix="tasks",
             postfix="count",
@@ -245,8 +243,8 @@ class MonitorStorage:
         current_timestamp_seconds = time.time()
         self._apply_operations(
             [
-                (current_timestamp_seconds - task_id_to_start_timestamp[task_id])
-                for task_id in task_id_to_start_timestamp
+                current_timestamp_seconds - start_time
+                for start_time in task_start_times
             ],
             ["sum", "max"],
             prefix="current_tasks",
@@ -398,11 +396,11 @@ class MonitorStorage:
 
     async def get_stats(self):
         with self._lock:
-            return copy.deepcopy(self._stats)
+            return dict(self._stats)
 
     async def get_statuses(self):
         with self._lock:
-            return copy.deepcopy(self._status_series)
+            return dict(self._status_series)
 
 
 class MetricServer:
