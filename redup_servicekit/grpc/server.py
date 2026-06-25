@@ -78,9 +78,7 @@ async def run_grpc_application(
         **(config_obj["service"].get("grpc_msg_opts") or {}),
         "maximum_concurrent_rpcs": maximum_concurrent_rpcs,
     }
-    if compression := config_obj["service"].get("grpc_compression"):
-        server_kwargs["compression"] = compression
-    if isinstance(server_kwargs.get("compression"), str):
+    if "compression" in server_kwargs:
         server_kwargs["compression"] = COMPRESSION.get(
             server_kwargs["compression"], grpc.Compression.NoCompression
         )

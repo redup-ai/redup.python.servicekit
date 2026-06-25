@@ -39,8 +39,8 @@ service:
   max_workers: 1
   hpa_max_workers: 1
   grpc_queue_size: 8
-  grpc_compression: gzip
   grpc_msg_opts:
+    compression: gzip
     options:
       - ['grpc.max_message_length', 100]
 """.strip()
