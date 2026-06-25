@@ -5,10 +5,15 @@ import grpc
 from redup_servicekit.grpc.server import run_grpc_application
 
 
-def _patch_grpc_runtime(monkeypatch):
+def _patch_grpc_runtime(monkeypatch, on_monitor_run=None):
+    class FakeMonitorServer:
+        def run(self, *args, **kwargs):
+            if on_monitor_run is not None:
+                on_monitor_run(self, *args, **kwargs)
+
     monkeypatch.setattr(
-        "redup_servicekit.grpc.server.MonitorServer.run",
-        lambda self, *args, **kwargs: None,
+        "redup_servicekit.grpc.server.MonitorServer",
+        FakeMonitorServer,
     )
     monkeypatch.setattr(
         "redup_servicekit.grpc.server.reflection.enable_server_reflection",
@@ -178,10 +183,9 @@ Example:
         "redup_servicekit.grpc.server.grpc.aio.server",
         lambda **kwargs: FakeServer(),
     )
-    _patch_grpc_runtime(monkeypatch)
-    monkeypatch.setattr(
-        "redup_servicekit.grpc.server.MonitorServer.run",
-        lambda self, *args, **kwargs: calls.append("metrics"),
+    _patch_grpc_runtime(
+        monkeypatch,
+        on_monitor_run=lambda self, *args, **kwargs: calls.append("metrics"),
     )
 
     asyncio.run(

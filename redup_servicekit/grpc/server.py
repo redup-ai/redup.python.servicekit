@@ -62,6 +62,8 @@ async def run_grpc_application(
     init_console_log(config_obj["service"]["console_log_level"])
     logging.info("Starting gRPC service")
 
+    servicers = build_servicers(config_obj)
+
     MonitorServer().run(
         config_obj.get("MonitorServer", {}),
         max_workers=int(config_obj["service"]["max_workers"]),
@@ -85,7 +87,7 @@ async def run_grpc_application(
 
     server = grpc.aio.server(**server_kwargs)
 
-    for add_fn, servicer in build_servicers(config_obj):
+    for add_fn, servicer in servicers:
         add_fn(servicer, server)
 
     if service_names:
