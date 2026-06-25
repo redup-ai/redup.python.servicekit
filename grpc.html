@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gRPC utilities &mdash; redup.python.servicekit 1.3.0 documentation</title>
+  <title>gRPC utilities &mdash; redup.python.servicekit 1.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=96647119"></script>
+      <script src="_static/documentation_options.js?v=ea36c55f"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -94,96 +94,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-redup_servicekit.grpc">
-<span id="grpc-utilities"></span><h1>gRPC utilities<a class="headerlink" href="#module-redup_servicekit.grpc" title="Link to this heading"></a></h1>
-<p>gRPC utilities: async client and server decorators for metrics and health.</p>
-<p>The <a class="reference internal" href="#module-redup_servicekit.grpc" title="redup_servicekit.grpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">redup_servicekit.grpc</span></code></a> package contains:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#redup_servicekit.grpc.BasicAsyncClient" title="redup_servicekit.grpc.client.BasicAsyncClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">redup_servicekit.grpc.client.BasicAsyncClient</span></code></a> — async gRPC client</p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">redup_servicekit.grpc.decorators.grpc_init_wrapper()</span></code> — init wrapper for servicer</p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">redup_servicekit.grpc.decorators.aio_grpc_method_wrapper()</span></code> — method wrapper for metrics</p></li>
-</ul>
-<dl class="py class">
-<dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BasicAsyncClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ServiceStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_concurrent_requests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Async gRPC client with on-demand channels, TLS and compression.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>host</strong> (<em>str</em>) – Server address with protocol: <code class="docutils literal notranslate"><span class="pre">grpc://host:port</span></code> (non-TLS) or <code class="docutils literal notranslate"><span class="pre">https://host:port</span></code> (TLS). Do not omit the scheme.</p></li>
-<li><p><strong>ServiceStub</strong> – Generated gRPC stub class (e.g. <code class="docutils literal notranslate"><span class="pre">MyServiceStub</span></code>).</p></li>
-<li><p><strong>max_message_length</strong> (<em>int</em>) – Max send/receive message length in bytes. Default 100 MiB.</p></li>
-<li><p><strong>request_compression_algo</strong> (<em>str</em>) – <code class="docutils literal notranslate"><span class="pre">gzip</span></code>, <code class="docutils literal notranslate"><span class="pre">deflate</span></code>, or <code class="docutils literal notranslate"><span class="pre">no_compression</span></code>.</p></li>
-<li><p><strong>response_compression_algo</strong> (<em>str</em>) – Same options; sent as metadata.</p></li>
-<li><p><strong>max_concurrent_requests</strong> – Max parallel outgoing calls. Omitted or zero — no limit.</p></li>
-</ul>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">redup_servicekit.grpc</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicAsyncClient</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">BasicAsyncClient</span><span class="p">(</span><span class="s2">&quot;grpc://localhost:50051&quot;</span><span class="p">,</span> <span class="n">MyServiceStub</span><span class="p">,</span> <span class="n">request_compression_algo</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">MyRequest</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">),</span> <span class="n">Method</span><span class="o">=</span><span class="s2">&quot;MyRpc&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ServiceStub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_compression_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gzip'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_concurrent_requests</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient.__init__" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="redup_servicekit.grpc.BasicAsyncClient.send">
-<span class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_message_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">104857600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/client.html#BasicAsyncClient.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.BasicAsyncClient.send" title="Link to this definition"></a></dt>
-<dd><p>Send a request and return a single response (unary) or async stream.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> – The request message instance.</p></li>
-<li><p><strong>Method</strong> (<em>str</em>) – Method name string (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;MyRpc&quot;</span></code>).</p></li>
-<li><p><strong>metadata</strong> – Optional tuple of (key, value) metadata.</p></li>
-<li><p><strong>max_message_length</strong> – Override max message length for this call.</p></li>
-<li><p><strong>timeout</strong> – Optional timeout in seconds.</p></li>
-<li><p><strong>stream</strong> (<em>bool</em>) – If True, return an async generator of response messages.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Single response message (unary) or async generator (stream).</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="redup_servicekit.grpc.aio_grpc_method_wrapper">
-<span class="sig-name descname"><span class="pre">aio_grpc_method_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/decorators.html#aio_grpc_method_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.aio_grpc_method_wrapper" title="Link to this definition"></a></dt>
-<dd><p>Wrap an async gRPC handler to record metrics and health.</p>
-<p>For each call: increments request counter, records task start/end,
-measures request/response size and duration, records success/failure
-and error type, updates health via <code class="xref py py-meth docutils literal notranslate"><span class="pre">ErrorParser.set_status()</span></code>.
-Injects <code class="docutils literal notranslate"><span class="pre">kwargs[&quot;info&quot;]</span></code> (context, time_remaining) and
-<code class="docutils literal notranslate"><span class="pre">kwargs[&quot;metrics&quot;]</span></code> (dict for custom metrics to merge into stats).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>func</strong> – Async handler with signature (self, request, context, <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>).</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="redup_servicekit.grpc.grpc_init_wrapper">
-<span class="sig-name descname"><span class="pre">grpc_init_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/redup_servicekit/grpc/decorators.html#grpc_init_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#redup_servicekit.grpc.grpc_init_wrapper" title="Link to this definition"></a></dt>
-<dd><p>Wrap the function that initializes and runs the gRPC server.</p>
-<p>Calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">ErrorParser.init()</span></code> and pre-registers per-method stats
-for all public methods of the servicer instance (args[0]). Use on
-your init/run function that creates the server and adds the servicer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>func</strong> – Callable that takes servicer (or server) and runs the server.</p>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="grpc-utilities">
+<h1>gRPC utilities<a class="headerlink" href="#grpc-utilities" title="Link to this heading"></a></h1>
 </section>
 
 

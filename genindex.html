@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; redup.python.servicekit 1.3.0 documentation</title>
+  <title>Index &mdash; redup.python.servicekit 1.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="https://github.com/redup-ai.png?size=32"/>
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=96647119"></script>
+      <script src="_static/documentation_options.js?v=ea36c55f"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -97,7 +97,6 @@
 <div class="genindex-jumpbox">
  <a href="#_"><strong>_</strong></a>
  | <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
@@ -118,11 +117,9 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="grpc.html#redup_servicekit.grpc.BasicAsyncClient.__init__">__init__() (BasicAsyncClient method)</a>
+      <li><a href="monitoring.html#redup_servicekit.monitoring.MetricServer.__init__">__init__() (MetricServer method)</a>
 
       <ul>
-        <li><a href="monitoring.html#redup_servicekit.monitoring.MetricServer.__init__">(MetricServer method)</a>
-</li>
         <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorServer.__init__">(MonitorServer method)</a>
 </li>
         <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorStorage.__init__">(MonitorStorage method)</a>
@@ -142,22 +139,12 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="grpc.html#redup_servicekit.grpc.aio_grpc_method_wrapper">aio_grpc_method_wrapper() (in module redup_servicekit.grpc)</a>
-</li>
       <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorServer.append_stats">append_stats() (MonitorServer method)</a>
 
       <ul>
         <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorStorage.append_stats">(MonitorStorage method)</a>
 </li>
       </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="grpc.html#redup_servicekit.grpc.BasicAsyncClient">BasicAsyncClient (class in redup_servicekit.grpc)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -214,14 +201,14 @@
         <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_stats">(MonitorStorage method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorServer.get_statuses">get_statuses() (MonitorServer method)</a>
 
       <ul>
         <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorStorage.get_statuses">(MonitorStorage method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorServer.get_time">get_time() (MonitorServer static method)</a>
 
       <ul>
@@ -229,8 +216,6 @@
 </li>
       </ul></li>
       <li><a href="monitoring.html#redup_servicekit.monitoring.MetricServer.get_wsgi_app">get_wsgi_app() (MetricServer method)</a>
-</li>
-      <li><a href="grpc.html#redup_servicekit.grpc.grpc_init_wrapper">grpc_init_wrapper() (in module redup_servicekit.grpc)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -279,8 +264,6 @@
         <li><a href="redup_servicekit.html#module-redup_servicekit">redup_servicekit</a>
 </li>
         <li><a href="config.html#module-redup_servicekit.config">redup_servicekit.config</a>
-</li>
-        <li><a href="grpc.html#module-redup_servicekit.grpc">redup_servicekit.grpc</a>
 </li>
         <li><a href="health.html#module-redup_servicekit.health">redup_servicekit.health</a>
 </li>
@@ -342,21 +325,12 @@
 </li>
       </ul></li>
       <li>
-    redup_servicekit.grpc
-
-      <ul>
-        <li><a href="grpc.html#module-redup_servicekit.grpc">module</a>
-</li>
-      </ul></li>
-      <li>
     redup_servicekit.health
 
       <ul>
         <li><a href="health.html#module-redup_servicekit.health">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     redup_servicekit.logging
 
@@ -364,6 +338,8 @@
         <li><a href="logging.html#module-redup_servicekit.logging">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     redup_servicekit.metrics
 
@@ -390,16 +366,14 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="grpc.html#redup_servicekit.grpc.BasicAsyncClient.send">send() (BasicAsyncClient method)</a>
-</li>
       <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorServer.set_stat_sync">set_stat_sync() (MonitorServer method)</a>
 </li>
       <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorStorage.set_stats">set_stats() (MonitorStorage method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="monitoring.html#redup_servicekit.monitoring.ErrorParser.set_status">set_status() (ErrorParser static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="monitoring.html#redup_servicekit.monitoring.MonitorServer.set_task_status">set_task_status() (MonitorServer method)</a>
 
       <ul>
