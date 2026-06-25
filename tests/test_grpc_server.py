@@ -196,6 +196,6 @@ Example:
         )
     )
 
-    assert calls.index("build") < calls.index("metrics")
+    assert calls.index("metrics") < calls.index("build")
     assert ("add", 42) in calls
     assert calls[-1] == "run"

@@ -62,13 +62,13 @@ async def run_grpc_application(
     init_console_log(config_obj["service"]["console_log_level"])
     logging.info("Starting gRPC service")
 
-    servicers = build_servicers(config_obj)
-
     MonitorServer().run(
         config_obj.get("MonitorServer", {}),
         max_workers=int(config_obj["service"]["max_workers"]),
         hpa_max_workers=int(config_obj["service"]["hpa_max_workers"]),
     )
+
+    servicers = build_servicers(config_obj)
 
     maximum_concurrent_rpcs = int(config_obj["service"].get("grpc_queue_size", 0))
     if maximum_concurrent_rpcs <= 0:
