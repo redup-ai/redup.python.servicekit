@@ -5,6 +5,7 @@ The :mod:`redup_servicekit.grpc.client` module contains:
 - :class:`redup_servicekit.grpc.client.BasicAsyncClient`
 """
 import asyncio
+from contextlib import asynccontextmanager
 from typing import Optional, Tuple
 from urllib.parse import urlparse
 
@@ -23,6 +24,11 @@ KEEPALIVE_TIMEOUT_MS = 5000
 KEEPALIVE_PERMIT_WITHOUT_CALLS = 1
 HTTP2_MAX_PINGS_WITHOUT_DATA = 0
 
+_BAD_CHANNEL_STATES = (
+    grpc.ChannelConnectivity.SHUTDOWN,
+    grpc.ChannelConnectivity.TRANSIENT_FAILURE,
+)
+
 
 class _AsyncNoop:
     async def __aenter__(self):
@@ -33,7 +39,12 @@ class _AsyncNoop:
 
 
 class BasicAsyncClient:
-    r"""Async gRPC client with on-demand channels, TLS and compression.
+    r"""Async gRPC client with a shared channel per endpoint, TLS and compression.
+
+    All calls on one client instance reuse a single ``grpc.aio`` channel. The channel
+    is recreated only when its connectivity state is ``SHUTDOWN`` or
+    ``TRANSIENT_FAILURE``. An ``UNAVAILABLE`` RPC (e.g. one backend pod behind Istio)
+    does not close the channel.
 
     :param host: Server address with protocol: ``grpc://host:port`` (non-TLS) or ``https://host:port`` (TLS). Do not omit the scheme.
     :type host: str
@@ -83,13 +94,56 @@ class BasicAsyncClient:
     ):
         self._server_address = host
         self._stub_cls = ServiceStub
-        self._compression_in = request_compression_algo
-        self._compression_out = response_compression_algo
         self._base_metadata = (("response-compression", response_compression_algo),)
         self._channel_opts = BasicAsyncClient._channel_options(max_message_length)
         self._endpoint, self._use_tls = BasicAsyncClient._parse_endpoint_and_tls(host)
-        self._open_channels = {}
+        self._compression = COMPRESSION.get(request_compression_algo, grpc.Compression.Gzip)
+        self._ssl_credentials = (
+            grpc.ssl_channel_credentials() if self._use_tls else None
+        )
+        self._channel = None
+        self._channel_lock = None
         self._semaphore = asyncio.Semaphore(max_concurrent_requests) if max_concurrent_requests else None
+
+    def _lock(self):
+        if self._channel_lock is None:
+            self._channel_lock = asyncio.Lock()
+        return self._channel_lock
+
+    async def _drop_channel(self):
+        async with self._lock():
+            if self._channel is not None:
+                await self._channel.close()
+                self._channel = None
+
+    async def _get_channel(self):
+        async with self._lock():
+            if self._channel is not None:
+                if self._channel.get_state(try_to_connect=False) not in _BAD_CHANNEL_STATES:
+                    return self._channel
+                await self._channel.close()
+            if self._use_tls:
+                self._channel = grpc.aio.secure_channel(
+                    self._endpoint,
+                    self._ssl_credentials,
+                    options=self._channel_opts,
+                    compression=self._compression,
+                )
+            else:
+                self._channel = grpc.aio.insecure_channel(
+                    self._endpoint,
+                    options=self._channel_opts,
+                    compression=self._compression,
+                )
+            return self._channel
+
+    @asynccontextmanager
+    async def _open_channel(self):
+        yield await self._get_channel()
+
+    async def aclose(self):
+        """Close the shared channel."""
+        await self._drop_channel()
 
     async def _invoke(self, channel, method_name: str, request, metadata, timeout, stream: bool):
         stub = self._stub_cls(channel)
@@ -115,44 +169,29 @@ class BasicAsyncClient:
         :param Method: Method name string (e.g. ``"MyRpc"``).
         :type Method: str
         :param metadata: Optional tuple of (key, value) metadata.
-        :param max_message_length: Override max message length for this call.
+        :param max_message_length: Kept for API compatibility; channel limits come from ``__init__``.
         :param timeout: Optional timeout in seconds.
         :param stream: If True, return an async generator of response messages.
         :type stream: bool
         :return: Single response message (unary) or async generator (stream).
         """
+        del max_message_length  # per-call override is not supported with a shared channel
         request_metadata = metadata + self._base_metadata
-        channel_options = BasicAsyncClient._channel_options(max_message_length) if max_message_length != DEFAULT_MAX_MESSAGE_LENGTH else self._channel_opts
-        if self._use_tls:
-            ssl_credentials = grpc.ssl_channel_credentials()
-            compression_algorithm = COMPRESSION.get(self._compression_in, grpc.Compression.Gzip)
-        else:
-            ssl_credentials = None
-            compression_algorithm = COMPRESSION.get(self._compression_in, grpc.Compression.Gzip)
 
         if not stream:
             async with self._semaphore if self._semaphore is not None else _AsyncNoop():
-                if self._use_tls:
-                    async with grpc.aio.secure_channel(self._endpoint, ssl_credentials, options=channel_options, compression=compression_algorithm) as channel:
-                        response_generator = self._invoke(channel, Method, request, request_metadata, timeout, False)
-                        return await response_generator.__anext__()
-                async with grpc.aio.insecure_channel(self._endpoint, options=channel_options, compression=compression_algorithm) as channel:
-                    response_generator = self._invoke(channel, Method, request, request_metadata, timeout, False)
+                async with self._open_channel() as channel:
+                    response_generator = self._invoke(
+                        channel, Method, request, request_metadata, timeout, False
+                    )
                     return await response_generator.__anext__()
-
-        if self._use_tls:
-            channel = grpc.aio.secure_channel(self._endpoint, ssl_credentials, options=channel_options, compression=compression_algorithm)
-        else:
-            channel = grpc.aio.insecure_channel(self._endpoint, options=channel_options, compression=compression_algorithm)
-        channel_identifier = id(channel)
-        self._open_channels[channel_identifier] = channel
 
         async def stream_response_generator():
             async with self._semaphore if self._semaphore is not None else _AsyncNoop():
-                try:
-                    async for response_message in self._invoke(channel, Method, request, request_metadata, timeout, True):
+                async with self._open_channel() as channel:
+                    async for response_message in self._invoke(
+                        channel, Method, request, request_metadata, timeout, True
+                    ):
                         yield response_message
-                finally:
-                    self._open_channels.pop(channel_identifier, None)
 
         return stream_response_generator()
